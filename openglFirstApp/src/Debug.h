@@ -6,15 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <glm/glm.hpp>
-#include <glm/matrix.hpp>
-#include <glm/ext/matrix_clip_space.hpp>
-
 #include <iostream>
-#include <assert.h>
-#include <fstream>
-#include <mutex>
-#include <vector>
 
 static bool error = false;
 

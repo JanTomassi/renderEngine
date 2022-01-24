@@ -1,5 +1,5 @@
 #include "Buffer.h"
-#include "Application.h"
+#include "Debug.h"
 
 glclass::Buffer::Buffer()
 {

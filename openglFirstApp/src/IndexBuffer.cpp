@@ -1,5 +1,6 @@
 #include "IndexBuffer.h"
-#include "Application.h"
+#include "Debug.h"
+#include <assert.h>
 
 glclass::IndexBuffer::IndexBuffer()
 {

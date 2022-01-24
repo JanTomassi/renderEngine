@@ -1,8 +1,8 @@
-#include "object.h"
+#include "Mesh.h"
 
-object::c_object::c_object(){}
+object::Mesh::Mesh(){}
 
-object::c_object::c_object(std::string p) : obj(objLoader(p)) {
+object::Mesh::Mesh(std::string p) : obj(objLoader(p)) {
 	
 	va.Bind();
 	vb.SetData(obj.vertexArrayPointer(), obj.vertexArraySize());
@@ -16,26 +16,26 @@ object::c_object::c_object(std::string p) : obj(objLoader(p)) {
 	ib.SetData(obj.indexArrayPointer(), obj.indexArrayCount());
 }
 
-object::c_object::~c_object()
+object::Mesh::~Mesh()
 {
 	//delete va;
 	//delete vb;
 	//delete ib;
 }
 
-void object::c_object::Activate() {
+void object::Mesh::Activate() {
 	va.Bind();
 	vb.Bind();
 	ib.Bind();
 }
 
-void object::c_object::Disactivate() {
+void object::Mesh::Disactivate() {
 	va.Unbind();
 	vb.Unbind();
 	ib.Unbind();
 }
 
-void object::c_object::render() {
+void object::Mesh::render() {
 	va.Bind(); vb.Bind(); ib.Bind();
 	GLCALL(glDrawElements(GL_TRIANGLES, obj.indexArrayCount(), GL_UNSIGNED_INT, nullptr));
 }

@@ -1,5 +1,5 @@
 #include "vertexArray.h"
-#include "Application.h"
+#include "Debug.h"
 
 glclass::VertexArray::VertexArray()
 {

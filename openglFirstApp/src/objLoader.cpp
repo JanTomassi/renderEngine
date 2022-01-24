@@ -41,7 +41,7 @@ objLoader::objLoader(std::string p) : path(p) {
 			//third vertex
 			pos1 = line.find(' ');
 			line = line.substr(pos1 + 1);
-			position.push_back(std::stof(line));
+			position.push_back(std::stof(line)-1.5f);
 			break;
 
 		case(vn):

@@ -5,15 +5,15 @@
 #include <glm/vec3.hpp>
 #include <iostream>
 #include <array>
+#include "Debug.h"
 #include "objLoader.h"
-#include "Application.h"
 #include "Buffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "BufferLayout.h"
 
 namespace object {
-	static class c_object
+	static class Mesh
 	{
 	private:
 		unsigned int m_RenderId;
@@ -24,9 +24,9 @@ namespace object {
 		glclass::IndexBuffer ib;
 
 	public:
-		c_object();
-		c_object(std::string p);
-		~c_object();
+		Mesh();
+		Mesh(std::string p);
+		~Mesh();
 
 		void render();
 		void Activate();
