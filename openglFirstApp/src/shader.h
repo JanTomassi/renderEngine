@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <assert.h>
 #include <iostream>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/matrix.hpp>
+#include <glm/glm.hpp>
 
 class shader
 {
@@ -42,7 +45,7 @@ public:
 		glAttachShader(m_shader_id, vs);
 		glAttachShader(m_shader_id, fs);
 		glLinkProgram(m_shader_id);
-		
+
 		//Testo for linking error
 		GLint program_linked;
 		glGetProgramiv(m_shader_id, GL_LINK_STATUS, &program_linked);
@@ -65,6 +68,21 @@ public:
 		glDeleteProgram(m_shader_id);
 	}
 
-	void useShader() { glUseProgram(m_shader_id); }
+	void useShader() {
+		glUseProgram(m_shader_id);
+	}
+
+	unsigned int getUniLoc(const std::string& name) {
+		return glGetUniformLocation(m_shader_id, name.c_str());
+	}
+
+	void SetUniform4f(const std::string& name, float a, float b, float c, float d) {
+		glUniform4f(getUniLoc(name), a, b, c, d);
+	}
+
+	void SetUniformMat4f(const std::string& name, glm::mat4& value) {
+		glUniformMatrix4fv(getUniLoc(name), 1, GL_FALSE, &value[0][0]);
+	}
+
 };
 

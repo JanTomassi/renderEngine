@@ -1,18 +1,24 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/ext/matrix_clip_space.hpp>
-#include <iostream>
-#include <assert.h>
-#include "shader.h"
-
 #define GLCALL(x) x;\
     if (error) {__debugbreak();error = false;};
+//#define GLM_FORCE_DEPTH_ZERO_TO_ONE 1;
 
-bool error = false;
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
-void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+#include <glm/glm.hpp>
+#include <glm/matrix.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
+
+#include <iostream>
+#include <assert.h>
+#include <fstream>
+#include <mutex>
+#include <vector>
+
+static bool error = false;
+
+inline void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 	if (severity != GL_DEBUG_SEVERITY_NOTIFICATION)
 	{
 		error = true;
@@ -20,7 +26,7 @@ void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum se
 	std::cout << "[OpenGL Error](" << type << " : Severity: " << severity << ") " << message << std::endl;
 }
 
-void test_window_creation(GLFWwindow* wind) {
+inline void test_window_creation(GLFWwindow* wind) {
 
 	if (!wind)
 	{
