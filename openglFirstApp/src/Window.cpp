@@ -46,6 +46,7 @@ Window::Window(int x, int y) : dim_width(x), dim_hight(y)
 	app = GLCALL(glfwCreateWindow(dim_width, dim_hight, "Hello World", NULL, NULL));
 
 	GLCALL(test_window_creation(app));
+	scene = new Scene(app);
 
 	glfwSwapInterval(1);
 	GLCALL(glEnable(GL_DEPTH_TEST));
@@ -54,9 +55,9 @@ Window::Window(int x, int y) : dim_width(x), dim_hight(y)
 	GLCALL(glEnable(GL_DEBUG_OUTPUT));
 	GLCALL(glDebugMessageCallback(MessageCallback, 0));
 #endif// GLCALL
-
-	scene.loadSynch("C:\\Users\\jangi\\Desktop\\face.obj");
-	scene.loadSynch("C:\\Users\\jangi\\Desktop\\ncat.obj");
+	std::vector<std::string> mesh;
+	mesh.push_back("C:\\Users\\jangi\\Desktop\\ball.obj");
+	scene->loadsAsync(mesh);
 
 	shader base_shader = shader(vs, fs);
 	base_shader.useShader();
@@ -77,7 +78,7 @@ void Window::start()
 		/* Render here */
 		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		scene.render();
+		scene->render();
 
 		/* Swap front and back buffers */
 

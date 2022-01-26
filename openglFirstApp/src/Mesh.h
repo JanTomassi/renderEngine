@@ -3,8 +3,8 @@
 #include <vector>
 #include <fstream>
 #include <glm/vec3.hpp>
-#include <iostream>
 #include <array>
+#include <mutex>
 #include "Debug.h"
 #include "objLoader.h"
 #include "Buffer.h"
@@ -13,19 +13,20 @@
 #include "BufferLayout.h"
 
 namespace object {
+	static std::mutex mx;
 	static class Mesh
 	{
 	private:
 		unsigned int m_RenderId;
-
-		objLoader obj;
+		objLoader* obj;
 		glclass::VertexArray va;
 		glclass::Buffer vb;
 		glclass::IndexBuffer ib;
 
 	public:
-		Mesh();
 		Mesh(std::string p);
+		void loadMesh();
+		void Allocate();
 		~Mesh();
 
 		void render();

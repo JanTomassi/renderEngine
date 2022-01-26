@@ -1,13 +1,38 @@
 #include "Scene.h"
+#include <thread> 
+#include <mutex>
 
-void Scene::loadSynch(std::string filepath)
+void Scene::loadSynch(object::Mesh* m)
 {
-	auto m = new object::Mesh(filepath);
-	meshs.push_back(m);
+	m->loadMesh();
+	std::lock_guard<std::mutex> lock(sceneLockMesh);
+	toLoads.push_back(m);//add Mesh to loading queue 
+}
+
+void Scene::loadsAsync(std::vector<std::string> filepaths) {
+	for (const auto& fp : filepaths)
+	{
+		object::Mesh* m = new object::Mesh(fp);
+		std::thread loadmesh(&Scene::loadSynch, this, m);
+		loadmesh.detach();
+	}
+}
+
+void Scene::addMeshs() {
+	std::lock_guard<std::mutex> lock(sceneLockMesh);
+	for (const auto& toLoad : toLoads)
+	{
+		toLoad->Allocate();
+		meshs.push_back(toLoad);
+	}
+	toLoads.clear();
 }
 
 void Scene::render()
 {
+	if (toLoads.size()>0)
+		addMeshs();
+
 	for (auto& mesh : meshs)
 	{
 		mesh->render();

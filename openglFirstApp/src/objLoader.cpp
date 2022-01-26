@@ -19,7 +19,48 @@ inline Options resolveOption(std::string input) {
 	return Option_Invalid;
 };
 
-objLoader::objLoader(std::string p) : path(p) {
+void objLoader::lineLexer(std::string s) {
+	while (s != "")
+	{
+		auto s_p = s.find('/');
+		auto pos_i = std::stoi(s.substr(0, s_p)) - 1;
+		s = s.substr(s_p + 1);
+
+		s_p = s.find('/');
+		auto text_i = std::stoi("0");//s.substr(0,s_p))-1;
+		s = s.substr(s_p + 1);
+
+		s_p = s.find(' ');
+		auto normal_i = std::stoi(s.substr(0, s_p)) - 1;
+		s = s.substr(s_p + 1);
+
+		Vertex ver;
+		//Index inside the IndexBuffer of any vertex
+		ver.pos[0] = position[pos_i * 3];
+		ver.pos[1] = position[(pos_i * 3) + 1];
+		ver.pos[2] = position[(pos_i * 3) + 2];
+
+		ver.normal[0] = normal[normal_i * 3];
+		ver.normal[1] = normal[(normal_i * 3) + 1];
+		ver.normal[2] = normal[(normal_i * 3) + 2];
+
+		auto pos_vec = std::find(vertex.begin(), vertex.end(), ver);
+
+
+		if (pos_vec != vertex.end()) {
+			int idx = pos_vec - vertex.begin();
+			index.push_back(idx);
+		}
+		else {
+			vertex.push_back(ver);
+			index.push_back(m_nIndex++);
+		}
+	}
+}
+
+objLoader::objLoader(std::string p) : path(p) {}
+
+void objLoader::read(){
 	std::ifstream in(path);
 	std::string line;
 	std::getline(in, line);
@@ -41,7 +82,7 @@ objLoader::objLoader(std::string p) : path(p) {
 			//third vertex
 			pos1 = line.find(' ');
 			line = line.substr(pos1 + 1);
-			position.push_back(std::stof(line)-1.5f);
+			position.push_back(std::stof(line) - 1.5f);
 			break;
 
 		case(vn):
@@ -67,14 +108,14 @@ objLoader::objLoader(std::string p) : path(p) {
 			break;
 
 		default:
-			//std::cout << line << std::endl;
+			pos1 = 0;
 			break;
 		}
 		std::getline(in, line);
 	}
 	in.close();
 
-//#define DEBUG //Print Vertex
+	//#define DEBUG //Print Vertex
 #ifdef DEBUG
 	for (size_t i = 0; i < vertex.size(); i = i + 3)
 	{

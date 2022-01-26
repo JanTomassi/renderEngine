@@ -1,11 +1,18 @@
 #include "Mesh.h"
 
-object::Mesh::Mesh(){}
+object::Mesh::Mesh(std::string p) {
+	obj = new objLoader(p);
+}
 
-object::Mesh::Mesh(std::string p) : obj(objLoader(p)) {
-	
+void object::Mesh::loadMesh()
+{
+	obj->read();
+}
+
+void object::Mesh::Allocate()
+{
 	va.Bind();
-	vb.SetData(obj.vertexArrayPointer(), obj.vertexArraySize());
+	vb.SetData(obj->vertexArrayPointer(), obj->vertexArraySize());
 
 	BufferLayout layout;
 	layout.Push<float>(3);
@@ -13,14 +20,12 @@ object::Mesh::Mesh(std::string p) : obj(objLoader(p)) {
 	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
-	ib.SetData(obj.indexArrayPointer(), obj.indexArrayCount());
+	ib.SetData(obj->indexArrayPointer(), obj->indexArrayCount());
 }
 
 object::Mesh::~Mesh()
 {
-	//delete va;
-	//delete vb;
-	//delete ib;
+	delete obj;
 }
 
 void object::Mesh::Activate() {
@@ -37,5 +42,5 @@ void object::Mesh::Disactivate() {
 
 void object::Mesh::render() {
 	va.Bind(); vb.Bind(); ib.Bind();
-	GLCALL(glDrawElements(GL_TRIANGLES, obj.indexArrayCount(), GL_UNSIGNED_INT, nullptr));
+	GLCALL(glDrawElements(GL_TRIANGLES, obj->indexArrayCount(), GL_UNSIGNED_INT, nullptr));
 }
