@@ -8,7 +8,7 @@ namespace glclass {
 
 	public:
 		Buffer();
-		void SetData(const void* data, unsigned int size);
+		void SetData(int type, const void* data, unsigned int size);
 		~Buffer();
 
 		void Bind() const;

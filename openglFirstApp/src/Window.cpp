@@ -8,13 +8,14 @@
 
 #include <iostream>
 #include <assert.h>
+
 #include "Debug.h"
 #include "Mesh.h"
 #include "shader.h"
 
 shader* base_shader;
 
-Window::Window(int x, int y) : dim_width(x), dim_hight(y)
+Window::Window(int x, int y) : dim_width(x), dim_hight(y), cam(new Camera())
 {
 	/* Initialize the library */
 	GLCALL(glfwInit());
@@ -32,6 +33,8 @@ Window::Window(int x, int y) : dim_width(x), dim_hight(y)
 	glEnable(GL_MULTISAMPLE);
 	GLCALL(glEnable(GL_DEPTH_TEST));
 
+	GLCALL(glfwSetKeyCallback(app, nullptr));
+
 #ifdef GLCALL	// Enable debug output
 	GLCALL(glEnable(GL_DEBUG_OUTPUT));
 	GLCALL(glDebugMessageCallback(MessageCallback, 0));
@@ -41,27 +44,15 @@ Window::Window(int x, int y) : dim_width(x), dim_hight(y)
 	mesh.push_back("C:\\Users\\jangi\\Desktop\\face.obj");
 	scene->loadsAsync(mesh);
 
-
 	base_shader = new shader();
-	//base_shader->add(GL_COMPUTE_SHADER, );
 	base_shader->add(GL_VERTEX_SHADER, "C:/Users/jangi/source/repos/app/openglFirstApp/shader/VertexShader.shader");
-	//base_shader->add(GL_GEOMETRY_SHADER, "C:/Users/jangi/source/repos/app/openglFirstApp/shader/GeometryShader.shader");
 	base_shader->add(GL_FRAGMENT_SHADER, "C:/Users/jangi/source/repos/app/openglFirstApp/shader/FragmentShader.shader");
 	base_shader->compile();
 	base_shader->useShader();
 
-	glm::mat4 proj = glm::perspective(glm::radians(64.0f), (GLfloat)dim_width / (GLfloat)dim_hight, (float)std::pow(2, -10), 10000.0f);
-
-	//proj = glm::ortho(-1.0, 1.0,
-	//	-(double)dim_hight / dim_width, (double)dim_hight / dim_width,
-	//	(double)std::pow(2, -10), 1000.0);
-
-	glm::mat4 tanslate(1.0);
-	tanslate = glm::translate(tanslate, glm::vec3(0.0, 0.0, -1.5f));
-	tanslate = glm::rotate(tanslate, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-
-	base_shader->SetUniformMat4f("m_porj", proj);
-	base_shader->SetUniformMat4f("m_tran", tanslate);
+	glfwSetKeyCallback(app, inputManager.keyboardCallback);
+	glfwSetCursorPosCallback(app, inputManager.mousePosCallback);
+	glfwSetInputMode(app, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Window::start()
@@ -69,19 +60,19 @@ void Window::start()
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(app))
 	{
+		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		int width, height;
 		glfwGetWindowSize(app, &width, &height);
 		glViewport(0, 0, width, height);
 
 		/* Render here */
-		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		glm::mat4 proj = glm::perspective(glm::radians(64.0f), (GLfloat)width / (GLfloat)height, (float)std::pow(2, -10), 10000.0f);
+		glm::mat4 proj = glm::perspective(glm::radians(20.0f), (GLfloat)width / (GLfloat)height, (float)std::pow(2, -10), 10000.0f);
+
+		proj = proj * cam->viewMatrix();
 
 		glm::mat4 tanslate(1.0f);
-		tanslate = glm::translate(tanslate, glm::vec3(0.0, 0.0, -1.5));
-		glm::vec3 dir_vec = glm::normalize(glm::vec3(0.0, glm::sin((float)glfwGetTime()/4), glm::sin((float)glfwGetTime() / 8) / 8));
-		tanslate = glm::rotate(tanslate, (float)glfwGetTime(), dir_vec);
+		tanslate = glm::translate(tanslate, glm::vec3(0.0, 0.0, sin(glfwGetTime()/ 3.14159265359)));
 
 		base_shader->SetUniformMat4f("m_porj", proj);
 		base_shader->SetUniformMat4f("m_tran", tanslate);

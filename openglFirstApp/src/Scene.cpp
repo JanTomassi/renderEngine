@@ -18,6 +18,7 @@ void Scene::loadsAsync(std::vector<std::string> filepaths) {
 	}
 }
 
+// Call from render funcion to allocate and bind the new object
 void Scene::addMeshs() {
 	std::lock_guard<std::mutex> lock(sceneLockMesh);
 	for (const auto& toLoad : toLoads)

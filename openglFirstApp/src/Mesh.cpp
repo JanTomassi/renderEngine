@@ -7,12 +7,14 @@ object::Mesh::Mesh(std::string p) {
 void object::Mesh::loadMesh()
 {
 	obj->read();
+	face_number = obj->indexArrayCount();
 }
 
+// Allocate the buffer array set the data
 void object::Mesh::Allocate()
 {
-	va.Bind();
-	vb.SetData(obj->vertexArrayPointer(), obj->vertexArraySize());
+	Activate();
+	vb.SetData(GL_ARRAY_BUFFER, obj->vertexArrayPointer(), obj->vertexArraySize());
 
 	BufferLayout layout;
 	layout.Push<float>(3);
@@ -20,12 +22,13 @@ void object::Mesh::Allocate()
 	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
-	ib.SetData(obj->indexArrayPointer(), obj->indexArrayCount());
+	ib.SetData(obj->indexArrayPointer(), face_number);
+	delete obj;
+	Disactivate();
 }
 
 object::Mesh::~Mesh()
 {
-	delete obj;
 }
 
 void object::Mesh::Activate() {
@@ -41,6 +44,6 @@ void object::Mesh::Disactivate() {
 }
 
 void object::Mesh::render() {
-	va.Bind(); vb.Bind(); ib.Bind();
-	GLCALL(glDrawElements(GL_TRIANGLES, obj->indexArrayCount(), GL_UNSIGNED_INT, nullptr));
+	va.Bind();
+	GLCALL(glDrawElements(GL_TRIANGLES, face_number, GL_UNSIGNED_INT, nullptr));
 }

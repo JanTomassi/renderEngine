@@ -17,8 +17,8 @@ namespace object {
 	static class Mesh
 	{
 	private:
-		unsigned int m_RenderId;
 		objLoader* obj;
+		unsigned int face_number;
 		glclass::VertexArray va;
 		glclass::Buffer vb;
 		glclass::IndexBuffer ib;

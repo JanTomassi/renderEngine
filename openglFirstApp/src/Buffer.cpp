@@ -7,9 +7,9 @@ glclass::Buffer::Buffer()
 	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_RenderId));
 }
 
-void glclass::Buffer::SetData(const void* data, unsigned int size) {
+void glclass::Buffer::SetData(int type, const void* data, unsigned int size) {
 	Bind();
-	GLCALL(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+	GLCALL(glBufferData(type, size, data, GL_STATIC_DRAW));
 }
 
 glclass::Buffer::~Buffer()

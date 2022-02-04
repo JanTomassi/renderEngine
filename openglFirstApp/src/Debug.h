@@ -13,6 +13,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <string>
 
 static bool error = false;
 
@@ -21,7 +22,32 @@ inline void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GL
 	{
 		error = true;
 	}
-	std::cout << "[OpenGL Error](" << type << " : Severity: " << severity << ") " << message << std::endl;
+	std::string severity_string;
+	switch (type)
+	{
+	case((int)GL_DEBUG_SEVERITY_NOTIFICATION):
+		severity_string = "GL_DEBUG_SEVERITY_NOTIFICATION";
+		break;
+	case((int)GL_DEBUG_SEVERITY_LOW):
+		severity_string = "GL_DEBUG_SEVERITY_LOW";
+		break;
+	case((int)GL_DEBUG_SEVERITY_MEDIUM):
+		severity_string = "GL_DEBUG_SEVERITY_MEDIUM";
+		break;
+	case((int)GL_DEBUG_SEVERITY_HIGH):
+		severity_string = "GL_DEBUG_SEVERITY_HIGH";
+		break;
+	case((int)GL_DEBUG_TYPE_OTHER):
+		severity_string = "GL_DEBUG_TYPE_OTHER";
+		break;
+	case((int)GL_DEBUG_TYPE_PERFORMANCE):
+		severity_string = "GL_DEBUG_TYPE_PERFORMANCE";
+		break;
+	default:
+		severity_string = std::to_string(severity);
+		break;
+	}
+	std::cout << "[OpenGL Error](" << type << " : Severity: " << severity_string << ") " << message << std::endl;
 }
 
 inline void test_window_creation(GLFWwindow* wind) {
