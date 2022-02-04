@@ -1,16 +1,22 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <assert.h>
-#include <iostream>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/matrix.hpp>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <assert.h>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
 
 class shader
 {
-public:
+private:
 	unsigned int m_shader_id;
+	std::vector<GLuint> compiledShaderId;
 
 	unsigned int CompileShader(unsigned int type, std::string& source) {
 		unsigned int id = glCreateShader(type);
@@ -35,15 +41,40 @@ public:
 	}
 
 public:
-	shader(std::string& vs_src, std::string& fs_src) {
+	shader() {
 		m_shader_id = glCreateProgram();
-		unsigned int vs = CompileShader(GL_VERTEX_SHADER, vs_src);
-		assert(vs != 0);
-		unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fs_src);
-		assert(fs != 0);
+	};
 
-		glAttachShader(m_shader_id, vs);
-		glAttachShader(m_shader_id, fs);
+	~shader() {
+		glDeleteProgram(m_shader_id);
+	}
+
+	void add(GLuint type, const std::string& src) {
+		std::ifstream in(src);
+
+		std::string file;
+
+		if (in.is_open()) {
+
+			while (!in.eof())
+			{
+				std::string c;
+				std::getline(in, c);
+				if (c != "") file += c;
+				file += '\n';
+			}
+			file += '\n';
+
+			unsigned int id = CompileShader(type, file);
+			compiledShaderId.push_back(id);
+		}
+	}
+
+	void compile() {
+		for (size_t i = 0; i < compiledShaderId.size(); i++)
+		{
+			glAttachShader(m_shader_id, compiledShaderId[i]);
+		}
 		glLinkProgram(m_shader_id);
 
 		//Testo for linking error
@@ -60,12 +91,10 @@ public:
 
 		glValidateProgram(m_shader_id);
 
-		glDeleteShader(vs);
-		glDeleteShader(fs);
-	};
-
-	~shader() {
-		glDeleteProgram(m_shader_id);
+		for (size_t i = 0; i < compiledShaderId.size(); i++)
+		{
+			glDetachShader(m_shader_id, compiledShaderId[i]);
+		}
 	}
 
 	void useShader() {
@@ -80,8 +109,8 @@ public:
 		glUniform4f(getUniLoc(name), a, b, c, d);
 	}
 
-	void SetUniformMat4f(const std::string& name, glm::mat4& value) {
-		glUniformMatrix4fv(getUniLoc(name), 1, GL_FALSE, &value[0][0]);
+	void SetUniformMat4f(const std::string& name, const glm::mat4& value) {
+		glUniformMatrix4fv(getUniLoc(name), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
 };

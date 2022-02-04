@@ -82,7 +82,7 @@ void objLoader::read(){
 			//third vertex
 			pos1 = line.find(' ');
 			line = line.substr(pos1 + 1);
-			position.push_back(std::stof(line) - 1.5f);
+			position.push_back(std::stof(line));
 			break;
 
 		case(vn):
