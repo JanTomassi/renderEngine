@@ -109,6 +109,14 @@ public:
 		glUniform4f(getUniLoc(name), a, b, c, d);
 	}
 
+	void SetUniformVet2f(const std::string& name, const glm::vec2& value) {
+		glUniform2fv(getUniLoc(name), 1, glm::value_ptr(value));
+	}
+
+	void SetUniformVet3f(const std::string& name, const glm::vec3& value) {
+		glUniform3fv(getUniLoc(name), 1, glm::value_ptr(value));
+	}
+
 	void SetUniformMat4f(const std::string& name, const glm::mat4& value) {
 		glUniformMatrix4fv(getUniLoc(name), 1, GL_FALSE, glm::value_ptr(value));
 	}

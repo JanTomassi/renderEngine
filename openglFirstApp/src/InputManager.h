@@ -17,24 +17,28 @@ public:
 		return instance;
 	}
 
-	static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) // this method is specified as glfw callback
+	// Static callback funcion for glfw c interface for the keyboard movement
+	static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) 
 	{
 		//here we access the instance via the singleton pattern and forward the callback to the instance method
 		getInstance().keyboardCallbackImp(window, key, scancode, action, mods);
 	}
-	static void mousePosCallback(GLFWwindow* window, double xpos, double ypos) // this method is specified as glfw callback
+	// Static callback funcion for glfw c interface for the mouse movement
+	static void mousePosCallback(GLFWwindow* window, double xpos, double ypos) 
 	{
 		//here we access the instance via the singleton pattern and forward the callback to the instance method
 		getInstance().mousePosCallbackImp(window, xpos, ypos);
 	}
 
-	void keyboardCallbackImp(GLFWwindow* window, int key, int scancode, int action, int mods) //this is the actual implementation of the callback method
+	//this is the implementascion of the callback method
+	void keyboardCallbackImp(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		for (auto& input : inputs)
 		{
 			input->keyfun(window, key, scancode, action, mods);
 		}
 	}
+	//this is the implementascion of the callback method
 	void mousePosCallbackImp(GLFWwindow* window, double xpos, double ypos) //this is the actual implementation of the callback method
 	{
 		for (auto& input : inputs)

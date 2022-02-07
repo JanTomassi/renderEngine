@@ -1,7 +1,7 @@
 #pragma once
 #ifdef _DEBUG
 #define GLCALL(x) x;\
-   // if (error) {__debugbreak();error = false;};
+   if (error) {__debugbreak();error = false;};
 #else
 #define GLCALL(x) x;
 #endif // _DEBUG

@@ -1,0 +1,1 @@
+double LastTimeGlobal = 0;

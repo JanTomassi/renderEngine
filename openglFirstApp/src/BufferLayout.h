@@ -33,7 +33,7 @@ public:
 	template<>
 	void Push<float>(int count) {
 		m_Elements.push_back(BufferElement{ GL_FLOAT, (unsigned int)count, false });
-		m_stride += count*BufferElement::GetSizeOfType(GL_FLOAT);
+		m_stride += count * BufferElement::GetSizeOfType(GL_FLOAT);
 	}
 
 	template<>

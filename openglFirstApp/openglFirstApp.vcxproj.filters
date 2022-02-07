@@ -54,6 +54,15 @@
     <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Global.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Debug.h">
@@ -95,5 +104,23 @@
     <ClInclude Include="src\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\VertexShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader\FragmentShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader\GeometryShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader\ComputeShader.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader\ComputeShader2.shader" />
   </ItemGroup>
 </Project>

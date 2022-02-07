@@ -1,50 +1,37 @@
 #include "Camera.h"
 #include <iostream>
+#include "Global.h"
 
-Camera::Camera() : Input(this){};
+Camera::Camera() : Input(this) {};
 
 void Camera::keyfun(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	const float cameraSpeed = 0.05f;
+	const float cameraSpeed = 5.0f;
 	if (action == GLFW_REPEAT || action == GLFW_PRESS)
 	{
+		//std::cout << (glfwGetTime()) << '\t' << LastTimeGlobal << '\t' << (glfwGetTime() - LastTimeGlobal) << std::endl;
+		const double delta_time = (glfwGetTime() - LastTimeGlobal);
 		switch (key)
 		{
 		case(GLFW_KEY_W):
-			cameraPos += cameraSpeed * cameraFront;
+			cameraPos += (float)(cameraSpeed * delta_time) * -cameraFront;
 			reCalculateView();
 			break;
 		case(GLFW_KEY_S):
-			cameraPos -= cameraSpeed * cameraFront;
-			reCalculateView();
-			break;
-		case(GLFW_KEY_A):
-			cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+			cameraPos -= (float)(cameraSpeed * delta_time) * -cameraFront;
 			reCalculateView();
 			break;
 		case(GLFW_KEY_D):
-			cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+			cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * (float)(cameraSpeed * delta_time);
 			reCalculateView();
 			break;
-		case(GLFW_KEY_UP):
-			cameraFront += glm::vec3(0.0, cameraSpeed, 0.0);
-			reCalculateView();
-			break;
-		case(GLFW_KEY_DOWN):
-			cameraFront += glm::vec3(0.0, -cameraSpeed, 0.0);
-			reCalculateView();
-			break;
-		case(GLFW_KEY_LEFT):
-			cameraFront += glm::vec3(-cameraSpeed, 0.0, 0.0);
-			reCalculateView();
-			break;
-		case(GLFW_KEY_RIGHT):
-			cameraFront += glm::vec3(cameraSpeed, 0.0, 0.0);
+		case(GLFW_KEY_A):
+			cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * (float)(cameraSpeed * delta_time);
 			reCalculateView();
 			break;
 		case(GLFW_KEY_ESCAPE):
 			if (action == GLFW_PRESS) {
-				mouse_state ? glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL) : glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				mouse_state ? glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED) : glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				mouse_state = !mouse_state;
 			}
 			break;
@@ -56,6 +43,8 @@ void Camera::keyfun(GLFWwindow* window, int key, int scancode, int action, int m
 
 void Camera::mousefun(GLFWwindow* window, int xpos, int ypos)
 {
+	if (mouse_state)
+		return;
 	if (firstMouse)
 	{
 		lastX = xpos;
@@ -84,7 +73,22 @@ void Camera::mousefun(GLFWwindow* window, int xpos, int ypos)
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-
 	cameraFront = glm::normalize(direction);
+
+	//std::cout
+	//	<< "Yaw: " << yaw
+	//	<< " Pitch: " << pitch
+	//	<< "\nX: " << direction.x
+	//	<< "\tY: " << direction.y
+	//	<< "\tZ: " << direction.z << std::endl;
+
+	cameraRot = glm::lookAt(glm::vec3(0.0), -direction, glm::vec3(0.0, 1.0, 0.0));
+	cameraRot = glm::inverse(cameraRot);
+
+	//std::cout
+	//	<< "\nX: " << cameraRot[0][0]
+	//	<< "\tY: " << cameraRot[1][1]
+	//	<< "\tZ: " << cameraRot[2][2] << std::endl;
+	//cameraFront = cameraRot * glm::vec4(0.0, 0.0, 1.0, 1.0);
 	reCalculateView();
 }
