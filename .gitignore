@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+build/*
+jRenderEngine
+
+
 # User-specific files
 *.rsuser
 *.suo
@@ -67,7 +72,7 @@ artifacts/
 ScaffoldingReadMe.txt
 
 # StyleCop
-StyleCopReport.xml
+vStyleCopReport.xml
 
 # Files built by Visual Studio
 *_i.c
