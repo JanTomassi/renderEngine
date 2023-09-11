@@ -1,28 +1,29 @@
 #include "Buffer.h"
 #include "Debug.h"
 
-glclass::Buffer::Buffer()
+glclass::Buffer::Buffer ()
 {
-	GLCALL(glGenBuffers(1, &m_RenderId));
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_RenderId));
+  GLCALL (glGenBuffers (1, &m_RenderId));
+  GLCALL (glBindBuffer (GL_ARRAY_BUFFER, m_RenderId));
 }
 
-void glclass::Buffer::SetData(int type, const void* data, unsigned int size) {
-	Bind();
-	GLCALL(glBufferData(type, size, data, GL_STATIC_DRAW));
+void
+glclass::Buffer::SetData (int type, const void *data, unsigned int size)
+{
+  Bind ();
+  GLCALL (glBufferData (type, size, data, GL_STATIC_DRAW));
 }
 
-glclass::Buffer::~Buffer()
+glclass::Buffer::~Buffer () { GLCALL (glDeleteBuffers (1, &m_RenderId)); }
+
+void
+glclass::Buffer::Bind () const
 {
-	GLCALL(glDeleteBuffers(1, &m_RenderId));
+  GLCALL (glBindBuffer (GL_ARRAY_BUFFER, m_RenderId));
 }
 
-void glclass::Buffer::Bind() const
+void
+glclass::Buffer::Unbind () const
 {
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, m_RenderId));
-}
-
-void glclass::Buffer::Unbind() const
-{
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
+  GLCALL (glBindBuffer (GL_ARRAY_BUFFER, 0));
 }

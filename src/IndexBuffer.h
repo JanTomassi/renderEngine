@@ -1,20 +1,21 @@
 #pragma once
 #include <stddef.h>
 
-namespace glclass {
+namespace glclass
+{
 
-	class IndexBuffer
-	{
-	private:
-		unsigned int m_RenderId;
+class IndexBuffer
+{
+private:
+  unsigned int m_RenderId;
 
-	public:
-		IndexBuffer();
-		~IndexBuffer();
+public:
+  IndexBuffer ();
+  ~IndexBuffer ();
 
-		void SetData(const unsigned int* data, size_t count);
+  void SetData (const unsigned int *data, size_t count);
 
-		void Bind() const;
-		void Unbind() const;
-	};
+  void Bind () const;
+  void Unbind () const;
+};
 }
