@@ -1,19 +1,20 @@
 #pragma once
 #include "BufferLayout.h"
 #include "Buffer.h"
-namespace glclass {
-	class VertexArray
-	{
-	private:
-		unsigned int m_RenderId;
-	public:
-		VertexArray();
-		~VertexArray();
+namespace glclass
+{
+class VertexArray
+{
+private:
+  unsigned int m_RenderId;
 
-		void AddBuffer(const glclass::Buffer& vb, const BufferLayout& layout);
+public:
+  VertexArray ();
+  ~VertexArray ();
 
-		void Bind() const;
-		void Unbind() const;
-	};
+  void AddBuffer (const glclass::Buffer &vb, const BufferLayout &layout);
+
+  void Bind () const;
+  void Unbind () const;
+};
 }
-
