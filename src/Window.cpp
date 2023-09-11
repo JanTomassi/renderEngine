@@ -10,10 +10,8 @@
 #include <assert.h>
 
 #include "Debug.h"
-#include "Mesh.h"
 #include "shader.h"
 #include "Global.h"
-#include "Texture.h"
 
 shader* base_shader;
 shader* cs;
@@ -79,7 +77,6 @@ void Window::start() {
 
 	cs->useShader();
 
-	glm::vec3 pos(0.0, 0.0, 0.0);
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(app))
 	{

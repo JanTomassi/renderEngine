@@ -28,7 +28,6 @@ void objLoader::lineLexer(std::string s) {
 		s = s.substr(s_p + 1);
 
 		s_p = s.find('/');
-		auto text_i = std::stoi("0");//s.substr(0,s_p))-1;
 		s = s.substr(s_p + 1);
 
 		s_p = s.find(' ');

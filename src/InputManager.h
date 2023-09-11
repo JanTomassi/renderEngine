@@ -9,7 +9,9 @@ public:
 	InputManager() = default;
 	~InputManager() = default;
 	void call(GLFWwindow* window, int key, int scancode, int action, int mods);
-	void add(Input* in);
+        void add(Input* in){
+	        inputs.push_back(in);
+	}
 
 	static InputManager& getInstance() // Singleton is accessed via getInstance()
 	{
@@ -46,11 +48,6 @@ public:
 			input->mousefun(window, xpos, ypos);
 		}
 	}
-        void InputManager::add(Input* in)
-        {
-	  inputs.push_back(in);
-        }
-
 
 	InputManager(InputManager const&) = default; // prevent copies
 	void operator=(InputManager const&); // prevent assignments

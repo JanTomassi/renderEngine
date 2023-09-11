@@ -1,5 +1,6 @@
 #include "VertexArray.h"
 #include "Debug.h"
+#include <cstddef>
 
 glclass::VertexArray::VertexArray()
 {
@@ -16,7 +17,7 @@ void glclass::VertexArray::AddBuffer(const glclass::Buffer& vb, const BufferLayo
 {
 	vb.Bind();
 	const auto& elements = layout.GetElements();
-	unsigned int offset = 0;
+	size_t offset = 0;
 	for (size_t i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
