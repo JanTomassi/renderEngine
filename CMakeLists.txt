@@ -5,6 +5,8 @@ project(jRenderEngine
   DESCRIPTION "A simple render engine in C++ that use opengl"
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
 # The main executable
 add_executable(jRenderEngine
   src/Application.cpp
