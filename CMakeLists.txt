@@ -6,12 +6,16 @@ project(jRenderEngine
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -ggdb -DDEBUG --pedantic")
+set(CMAKE_CXX_FLAGS_RELEASE "-Wall")
 
 # The main executable
 add_executable(jRenderEngine
   src/application.cpp
   src/window.cpp
   src/window.hpp
+  src/debug.cpp
+  src/debug.hpp
 )
 
 # Compile options
