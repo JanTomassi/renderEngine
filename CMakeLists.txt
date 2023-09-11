@@ -1,5 +1,5 @@
 # Project Settings
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.20)
 project(jRenderEngine
   VERSION 0.0.1
   DESCRIPTION "A simple render engine in C++ that use opengl"
@@ -10,6 +10,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 # The main executable
 add_executable(jRenderEngine
   src/application.cpp
+  src/window.cpp
+  src/window.hpp
 )
 
 # Compile options

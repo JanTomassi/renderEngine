@@ -1,5 +1,8 @@
+#include "window.hpp"
 int
 main (int argc, char **argv)
 {
-  return 0;
+  JRE::WindowManager main_windows = JRE::WindowManager(640,480);
+  
+  return main_windows.start();
 }
