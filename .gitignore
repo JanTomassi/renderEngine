@@ -1,2 +1,4 @@
 build/
 jRenderEngine
+.cache
+compile_commands.json
