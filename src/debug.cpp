@@ -1,4 +1,5 @@
 #include "debug.hpp"
+#include <sstream>
 #include <stdexcept>
 
 void GLAPIENTRY
@@ -40,11 +41,19 @@ MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
       type_string = std::to_string (type);
       break;
     }
-  if(((debug_params_t*)userParam)->throw_error){
-    throw std::runtime_error("Error on opengl call");
-  }
-  std::cout << "[OpenGL Error](" << type << " : Severity: " << severity_string
-            << ") " << message << std::endl;
+  if (((debug_params_t *)userParam)->throw_error)
+    {
+      std::stringstream out;
+      out << "[OpenGL Error](" << type << " : Severity: " << severity_string
+          << ") " << message << std::endl;
+      throw std::runtime_error (out.str());
+    }
+  else
+    {
+      std::cout << "[OpenGL Error](" << type
+                << " : Severity: " << severity_string << ") " << message
+                << std::endl;
+    }
 }
 
 void
