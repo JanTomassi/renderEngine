@@ -12,10 +12,15 @@ set(CMAKE_CXX_FLAGS_RELEASE "-Wall")
 # The main executable
 add_executable(jRenderEngine
   src/application.cpp
-  src/window.cpp
-  src/window.hpp
+
+  src/bufferLayout.cpp
+  src/bufferLayout.hpp
+
   src/debug.cpp
   src/debug.hpp
+
+  src/window.cpp
+  src/window.hpp
 )
 
 # Compile options
