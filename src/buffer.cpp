@@ -3,13 +3,9 @@
 
 using namespace JRE::glObject;
 /**
- * @brif Init a new buffer assiume is a GL_ARRAY_BUFFER
+ * @brif Init a new buffer assiume
  */
-Buffer::Buffer ()
-{
-  glGenBuffers (1, &m_RenderId);
-  glBindBuffer (GL_ARRAY_BUFFER, m_RenderId);
-}
+Buffer::Buffer () { glGenBuffers (1, &m_RenderId); }
 
 /**
  * @brif set the opengl buffer data
