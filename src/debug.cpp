@@ -1,15 +1,10 @@
 #include "debug.hpp"
-
-bool error = false;
+#include <stdexcept>
 
 void GLAPIENTRY
 MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
                  GLsizei length, const GLchar *message, const void *userParam)
 {
-  if (severity != GL_DEBUG_SEVERITY_NOTIFICATION)
-    {
-      error = true;
-    }
   std::string severity_string;
   std::string type_string;
   switch (severity)
@@ -45,6 +40,9 @@ MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
       type_string = std::to_string (type);
       break;
     }
+  if(((debug_params_t*)userParam)->throw_error){
+    throw std::runtime_error("Error on opengl call");
+  }
   std::cout << "[OpenGL Error](" << type << " : Severity: " << severity_string
             << ") " << message << std::endl;
 }

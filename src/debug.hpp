@@ -1,17 +1,5 @@
 #pragma once
 #include <csignal>
-#ifdef _DEBUG
-#define GLCALL(x)                                                             \
-  {                                                                           \
-    x;                                                                        \
-    if (error)                                                                \
-      {                                                                       \
-        std::signal (SIGTRAP);                                                \
-        error = false;                                                        \
-      };
-#else
-#define GLCALL(x) x;
-#endif // _DEBUG
 
 // #define GLM_FORCE_DEPTH_ZERO_TO_ONE 1;
 
@@ -21,7 +9,10 @@
 #include <iostream>
 #include <string>
 
-extern bool error;
+typedef struct
+{
+  bool throw_error;
+} debug_params_t;
 
 extern void GLAPIENTRY MessageCallback (GLenum source, GLenum type, GLuint id,
                                         GLenum severity, GLsizei length,

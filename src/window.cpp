@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdint>
 #include "window.hpp"
 #include "debug.hpp"
@@ -28,23 +29,34 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
 
 #ifdef DEBUG
   glEnable (GL_DEBUG_OUTPUT);
-  glDebugMessageCallback (MessageCallback, 0);
+  glEnable (GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+  debug_params_t *debug_params = new debug_params_t ();
+  debug_params->throw_error = true;
+
+  glDebugMessageCallback (MessageCallback, &debug_params);
+#else
+  glEnable (GL_DEBUG_OUTPUT);
+
+  debug_params_t *debug_params = new debug_params_t ();
+  debug_params->throw_error = false;
+
+  glDebugMessageCallback (MessageCallback, &debug_params);
 #endif
 
   glfwSwapInterval (1);
   glEnable (GL_MULTISAMPLE);
-  GLCALL (glEnable (GL_DEPTH_TEST));
+  glEnable (GL_DEPTH_TEST);
 
-  GLCALL (glfwSetKeyCallback (main_window.app, nullptr));
+  glfwSetKeyCallback (main_window.app, nullptr);
 }
 
 uint32_t
 WindowManager::start ()
 {
-
   while (!glfwWindowShouldClose (main_window.app))
     {
-      GLCALL (glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+      glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       int width, height;
       glfwGetWindowSize (main_window.app, &width, &height);
       glViewport (0, 0, width, height);
@@ -52,13 +64,13 @@ WindowManager::start ()
       /* Render here */
 
       /* Swap front and back buffers */
-      GLCALL (glfwSwapBuffers (main_window.app));
+      glfwSwapBuffers (main_window.app);
 
       /* Poll for and process events */
-      GLCALL (glfwPollEvents ());
+      glfwPollEvents ();
     }
 
-  GLCALL (glfwTerminate ());
+  glfwTerminate ();
 
   return 0;
 }
