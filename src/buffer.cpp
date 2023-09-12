@@ -4,8 +4,12 @@
 using namespace JRE::glObject;
 /**
  * @brif Init a new buffer assiume
+ * @param buffer_type set the type of the buffer
  */
-Buffer::Buffer () { glGenBuffers (1, &m_RenderId); }
+Buffer::Buffer (int buffer_type): type(buffer_type)
+{
+  glGenBuffers (1, &m_RenderId);
+}
 
 /**
  * @brif set the opengl buffer data
@@ -15,7 +19,7 @@ Buffer::Buffer () { glGenBuffers (1, &m_RenderId); }
  * @return if the call was successful
  */
 void
-Buffer::set_data (int type, const void *data, unsigned int size) const
+Buffer::set_data (const void *data, unsigned int size) const
 {
   bind ();
   glBufferData (type, size, data, GL_STATIC_DRAW);
@@ -32,7 +36,7 @@ Buffer::~Buffer () { glDeleteBuffers (1, &m_RenderId); }
 void
 Buffer::bind () const
 {
-  glBindBuffer (GL_ARRAY_BUFFER, m_RenderId);
+  glBindBuffer (type, m_RenderId);
 }
 
 /**
@@ -41,5 +45,5 @@ Buffer::bind () const
 void
 Buffer::unbind () const
 {
-  glBindBuffer (GL_ARRAY_BUFFER, 0);
+  glBindBuffer (type, 0);
 }

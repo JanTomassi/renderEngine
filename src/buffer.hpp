@@ -8,10 +8,11 @@ class Buffer
 {
 private:
   unsigned int m_RenderId;
+  const int type;
 
 public:
-  Buffer ();
-  void set_data (int type, const void *data, unsigned int size) const;
+  Buffer (int buffer_type);
+  void set_data (const void *data, unsigned int size) const;
   ~Buffer ();
 
   void bind () const;
