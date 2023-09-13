@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include "window.hpp"
 #include "debug.hpp"
 
@@ -9,7 +10,8 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
     : main_window (window_t{ x, y, "JRE", nullptr })
 {
   /* Initialize the library */
-  glfwInit ();
+  if (!glfwInit ())
+    exit (-1);
 
   glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
   glfwWindowHint (GLFW_SAMPLES, 16);
