@@ -13,6 +13,13 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
   if (!glfwInit ())
     exit (-1);
 
+  glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 6);
+#ifdef DEBUG
+  glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+#else
+  glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif
   glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
   glfwWindowHint (GLFW_SAMPLES, 16);
 
