@@ -3,7 +3,10 @@ namespace JRE
 {
 namespace glObject
 {
-
+/**
+ * @brif Opengl buffer's manager
+ * @description see https://www.khronos.org/opengl/wiki/Buffer_Object to get a more detail description
+ */
 class Buffer
 {
 private:
