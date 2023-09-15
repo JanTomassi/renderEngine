@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
@@ -28,6 +29,9 @@ private:
     const uint32_t
         data_count; /*< number of consecutive element of the same type*/
     const bool normalize;
+    const size_t data_offset; /*< offset in byte from the begining of the layer
+                                 e.x. for object b: a[0-7], b[8-15], c[16-23],
+                                 stride == 24, offset == 8*/
 
     /**
      * @brief Get the type size in bytes
