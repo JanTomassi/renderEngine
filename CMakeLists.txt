@@ -27,7 +27,7 @@ add_executable(jRenderEngine
 )
 
 # Compile options
-# set_property(TARGET jRenderEngine PROPERTY CXX_STANDARD 11)
+set_property(TARGET jRenderEngine PROPERTY CXX_STANDARD 20)
 target_compile_options(jRenderEngine PRIVATE -Wall)
 
 add_definitions(-DGLEW_STATIC)
