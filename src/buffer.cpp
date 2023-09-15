@@ -3,7 +3,8 @@
 
 using namespace JRE::glObject;
 
-Buffer::Buffer (int buffer_type) : type (buffer_type)
+Buffer::Buffer (buffer_types buffer_type)
+    : type (static_cast<int> (buffer_type))
 {
   glGenBuffers (1, &m_RenderId);
 }
