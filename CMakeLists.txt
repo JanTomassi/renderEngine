@@ -22,6 +22,9 @@ add_executable(jRenderEngine
   src/debug.cpp
   src/debug.hpp
 
+  src/shader.cpp
+  src/shader.hpp
+
   src/vertexArray.cpp
   src/vertexArray.hpp
   
