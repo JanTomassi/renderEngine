@@ -1,8 +1,9 @@
+#include "window.hpp"
+#include "debug.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
-#include "window.hpp"
-#include "debug.hpp"
+#include "GLFW/glfw3.h"
 
 using namespace JRE;
 
@@ -15,11 +16,14 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
 
   glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 6);
+  glfwWindowHint (GLFW_RESIZABLE, GLFW_FALSE);
+
 #ifdef DEBUG
   glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 #else
   glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
+
   glfwWindowHint (GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
   glfwWindowHint (GLFW_SAMPLES, 16);
 
