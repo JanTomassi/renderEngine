@@ -17,8 +17,8 @@ VertexArray::~VertexArray () { glDeleteVertexArrays (1, &m_RenderId); }
 void
 VertexArray::set_vbuffer (const Buffer &vb, const helper::BufferLayout layout)
 {
-  this->bind ();
   vb.bind ();
+  this->bind ();
 
   auto layers = layout.get_elements ();
   for (auto it = layers.cbegin (); it != layers.cend (); it++)
@@ -30,8 +30,8 @@ VertexArray::set_vbuffer (const Buffer &vb, const helper::BufferLayout layout)
                              reinterpret_cast<void *> (it->data_offset));
     }
 
-  vb.unbind ();
   this->unbind ();
+  vb.unbind ();
 }
 
 void
