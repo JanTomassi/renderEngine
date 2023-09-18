@@ -88,5 +88,11 @@ public:
     return m_stride;
   }
 };
+template <> void BufferLayout::append<GLfloat> (uint32_t count);
+
+template <> void BufferLayout::append<GLuint> (uint32_t count);
+
+template <> void BufferLayout::append<GLbyte> (uint32_t count);
 }
+
 }
