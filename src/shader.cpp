@@ -9,31 +9,33 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-
 using namespace JRE::glObject;
 
 // Private functions
 
 uint32_t
-report_compile_error (uint32_t shader_id)
+report_compile_error (uint32_t shader_id, const std::string &shader_name)
 {
   int msg_length;
   char *message;
   glGetShaderiv (shader_id, GL_INFO_LOG_LENGTH, &msg_length);
 
-  message = static_cast<char *>(alloca (msg_length * sizeof (char))); // Allocate on the stack
+  message = static_cast<char *> (
+      alloca (msg_length * sizeof (char))); // Allocate on the stack
 
   glGetShaderInfoLog (shader_id, msg_length, &msg_length, message);
 
-  std::cout << "Failed to compile: " << std::endl;
-  std::cout << message << std::endl;
+  std::cerr << "\033[31m"
+            << "[Failed to compile shader] ";
+  std::cerr << shader_name << ":" << message << "\033[0m" << std::endl;
 
   glDeleteShader (shader_id);
   return 0;
 }
 
 uint32_t
-Shader::compile_shader (uint32_t type, std::string &source)
+Shader::compile_shader (uint32_t type, std::string &source,
+                        const std::string &shader_name)
 {
   uint32_t shader_id = glCreateShader (type);
   const char *src = source.c_str ();
@@ -44,7 +46,7 @@ Shader::compile_shader (uint32_t type, std::string &source)
   glGetShaderiv (shader_id, GL_COMPILE_STATUS, &res);
   if (res == GL_FALSE)
     {
-      report_compile_error(shader_id);
+      report_compile_error (shader_id, shader_name);
       return 0;
     }
 
@@ -57,11 +59,13 @@ report_link_error (const uint32_t program_id)
   int msg_length;
   char *message;
   glGetProgramiv (program_id, GL_INFO_LOG_LENGTH, &msg_length);
-  message = static_cast<char*>(alloca(msg_length * sizeof(char))); // Allocate ont he stack
-  
+  message = static_cast<char *> (
+      alloca (msg_length * sizeof (char))); // Allocate ont he stack
+
   glGetProgramInfoLog (program_id, 1024, &msg_length, message);
-  std::cout << "Error in linking:" << std::endl;
-  std::cout << message << std::endl;
+  std::cerr << "\033[31m"
+            << "[Error in linking] " << std::endl;
+  std::cerr << message << "\033[0m" << std::endl;
 }
 
 void
@@ -118,7 +122,7 @@ Shader::add_src (uint32_t type, const std::string &src)
     file_to_string (in, shader_string);
   shader_string += '\n';
 
-  uint32_t id = compile_shader (type, shader_string);
+  uint32_t id = compile_shader (type, shader_string, src);
   m_compiled_shader_id.push_back (id);
 
   shader_string.clear ();
