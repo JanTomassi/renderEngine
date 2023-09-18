@@ -1,58 +1,98 @@
 #include "debug.hpp"
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 void GLAPIENTRY
 MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
                  GLsizei length, const GLchar *message, const void *userParam)
 {
-  std::string severity_string;
+  std::string source_string;
   std::string type_string;
-  switch (severity)
+  std::string severity_string;
+  std::string color;
+  bool is_throwing = false;
+  switch (source)
     {
-    case ((int)GL_DEBUG_SEVERITY_NOTIFICATION):
-      severity_string = "GL_DEBUG_SEVERITY_NOTIFICATION";
+    case GL_DEBUG_SOURCE_API:
+      source_string = "Source: API";
       break;
-    case ((int)GL_DEBUG_SEVERITY_LOW):
-      severity_string = "GL_DEBUG_SEVERITY_LOW";
+    case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+      source_string = "Source: Window System";
       break;
-    case ((int)GL_DEBUG_SEVERITY_MEDIUM):
-      severity_string = "GL_DEBUG_SEVERITY_MEDIUM";
+    case GL_DEBUG_SOURCE_SHADER_COMPILER:
+      source_string = "Source: Shader Compiler";
       break;
-    case ((int)GL_DEBUG_SEVERITY_HIGH):
-      severity_string = "GL_DEBUG_SEVERITY_HIGH";
+    case GL_DEBUG_SOURCE_THIRD_PARTY:
+      source_string = "Source: Third Party";
+      break;
+    case GL_DEBUG_SOURCE_APPLICATION:
+      source_string = "Source: Application";
+      break;
+    case GL_DEBUG_SOURCE_OTHER:
+      source_string = "Source: Other";
       break;
     }
   switch (type)
     {
-    case (GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR):
-      type_string = "GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR";
+    case GL_DEBUG_TYPE_ERROR:
+      type_string = "Type: Error";
       break;
-    case (GL_DEBUG_TYPE_ERROR):
-      type_string = "GL_DEBUG_TYPE_ERROR";
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+      type_string = "Type: Deprecated Behaviour";
       break;
-    case ((int)GL_DEBUG_TYPE_OTHER):
-      type_string = "GL_DEBUG_TYPE_OTHER";
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+      type_string = "Type: Undefined Behaviour";
       break;
-    case ((int)GL_DEBUG_TYPE_PERFORMANCE):
-      type_string = "GL_DEBUG_TYPE_PERFORMANCE";
+    case GL_DEBUG_TYPE_PORTABILITY:
+      type_string = "Type: Portability";
       break;
-    default:
-      type_string = std::to_string (type);
+    case GL_DEBUG_TYPE_PERFORMANCE:
+      type_string = "Type: Performance";
+      break;
+    case GL_DEBUG_TYPE_MARKER:
+      type_string = "Type: Marker";
+      break;
+    case GL_DEBUG_TYPE_PUSH_GROUP:
+      type_string = "Type: Push Group";
+      break;
+    case GL_DEBUG_TYPE_POP_GROUP:
+      type_string = "Type: Pop Group";
+      break;
+    case GL_DEBUG_TYPE_OTHER:
+      type_string = "Type: Other";
       break;
     }
-  if (((debug_params_t *)userParam)->throw_error)
+  switch (severity)
+    {
+    case GL_DEBUG_SEVERITY_HIGH:
+      severity_string = "Severity: high";
+      color = "\033[31m";
+      break;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+      severity_string = "Severity: medium";
+      color = "\033[103m";
+      break;
+    case GL_DEBUG_SEVERITY_LOW:
+      severity_string = "Severity: low";
+      color = "\033[32m";
+      break;
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+      severity_string = "Severity: notification";
+      color = "\033[0m";
+      break;
+    }
+  if (((debug_params_t *)userParam)->throw_error && is_throwing)
     {
       std::stringstream out;
-      out << "[OpenGL Error](" << type << " : Severity: " << severity_string
-          << ") " << message << std::endl;
-      throw std::runtime_error (out.str());
+      out << "[OpenGL Error](" << source_string << "; " << type_string << "; "
+          << severity_string << ") " << message << std::endl;
+      throw std::runtime_error (out.str ());
     }
   else
     {
-      std::cout << "[OpenGL Error](" << type
-                << " : Severity: " << severity_string << ") " << message
-                << std::endl;
+      std::cout << color << "[OpenGL Error](" << source_string << "; " << type_string
+                << "; " << severity_string << ") " << message << "\033[0m" << std::endl;
     }
 }
 
