@@ -44,8 +44,8 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
   glEnable (GL_DEBUG_OUTPUT);
   glEnable (GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
-  debug_params_t *debug_params = new debug_params_t ();
-  debug_params->throw_error = true;
+  debug_params_t debug_params;
+  debug_params.throw_error = true;
 
   glDebugMessageCallback (MessageCallback, &debug_params);
 #else
