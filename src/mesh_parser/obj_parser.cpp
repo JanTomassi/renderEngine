@@ -1,4 +1,5 @@
 #include "obj_parser.hpp"
+#include <algorithm>
 #include <cassert>
 #include <chrono>
 #include <fstream>

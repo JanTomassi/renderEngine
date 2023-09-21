@@ -1,4 +1,6 @@
 #include "../mesh_parser.hpp"
+#include <array>
+#include <cstdint>
 
 namespace JRE
 {
