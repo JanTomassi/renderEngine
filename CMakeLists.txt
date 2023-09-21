@@ -5,8 +5,9 @@ project(jRenderEngine
   DESCRIPTION "A simple render engine in C++ that use opengl"
 )
 
+SET (CMAKE_CXX_COMPILER "/usr/bin/clang++" CACHE STRING "C++ compiler" FORCE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -ggdb -DDEBUG --pedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -ggdb -DDEBUG --pedantic --std=c++20 -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall")
 
 # The main executable
@@ -21,6 +22,13 @@ add_executable(jRenderEngine
 
   src/debug.cpp
   src/debug.hpp
+
+  src/mesh.hpp
+
+  src/mesh_parser.hpp
+
+  src/mesh_parser/obj_parser.cpp
+  src/mesh_parser/obj_parser.hpp
 
   src/shader.cpp
   src/shader.hpp
