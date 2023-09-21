@@ -8,7 +8,8 @@ namespace glObject
 {
 /**
  * @brif Opengl buffer's manager
- * @description see https://www.khronos.org/opengl/wiki/Buffer_Object to get a more detail description
+ * @description see https://www.khronos.org/opengl/wiki/Buffer_Object to get a
+ * more detail description
  */
 class Buffer
 {
@@ -17,12 +18,12 @@ private:
   const int type;
 
 public:
-
-  enum class buffer_types : uint32_t{
+  enum class buffer_types : uint32_t
+  {
     attributes = GL_ARRAY_BUFFER,
     indices = GL_ELEMENT_ARRAY_BUFFER
   };
-  
+
   /**
    * @brif Init a new buffer assiume
    * @param buffer_type set the type of the buffer
