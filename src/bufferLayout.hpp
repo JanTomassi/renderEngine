@@ -45,6 +45,8 @@ private:
         {
         case GL_FLOAT:
           return sizeof (GLfloat);
+        case GL_DOUBLE:
+          return sizeof (GLdouble);
         case GL_UNSIGNED_INT:
           return sizeof (GLuint);
         case GL_BYTE:
@@ -90,9 +92,12 @@ public:
 };
 template <> void BufferLayout::append<GLfloat> (uint32_t count);
 
+template <> void BufferLayout::append<GLdouble> (uint32_t count);
+
 template <> void BufferLayout::append<GLuint> (uint32_t count);
 
 template <> void BufferLayout::append<GLbyte> (uint32_t count);
+
 }
 
 }

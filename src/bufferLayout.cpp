@@ -15,6 +15,14 @@ BufferLayout::append<GLfloat> (uint32_t count)
 
 template <>
 void
+BufferLayout::append<GLdouble> (uint32_t count)
+{
+  m_layers.push_back (Layer{ GL_DOUBLE, count, false, m_stride });
+  m_stride += count * Layer::get_size_of_type (GL_DOUBLE);
+}
+
+template <>
+void
 BufferLayout::append<GLuint> (uint32_t count)
 {
   m_layers.push_back (Layer{ GL_UNSIGNED_INT, count, false, m_stride });
