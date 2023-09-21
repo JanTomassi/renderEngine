@@ -1,6 +1,6 @@
 #include "window.hpp"
 int
-main (int argc, char **argv)
+main ()
 {
   JRE::WindowManager main_windows = JRE::WindowManager (640, 480);
 
