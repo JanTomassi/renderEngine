@@ -1,5 +1,4 @@
 #include "buffer.hpp"
-#include "debug.hpp"
 
 using namespace JRE::glObject;
 
