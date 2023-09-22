@@ -7,7 +7,7 @@ project(jRenderEngine
 
 SET (CMAKE_CXX_COMPILER "/usr/bin/clang++" CACHE STRING "C++ compiler" FORCE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -ggdb -DDEBUG --pedantic --std=c++20 -O0")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -Wconversion -ggdb -DDEBUG --pedantic --std=c++20 -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-Wall")
 
 # The main executable
