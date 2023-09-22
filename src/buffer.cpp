@@ -1,10 +1,12 @@
 #include "buffer.hpp"
 #include <cstddef>
+#include <cstdint>
 
 using namespace JRE::glObject;
 
-Buffer::Buffer (buffer_types buffer_type)
-    : type (static_cast<int> (buffer_type))
+Buffer::Buffer (buffer_types buffer_type, buffer_usage usage)
+    : type (static_cast<uint32_t> (buffer_type)),
+      usage (static_cast<uint32_t> (usage))
 {
   glGenBuffers (1, &m_RenderId);
 }
