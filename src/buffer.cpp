@@ -1,4 +1,5 @@
 #include "buffer.hpp"
+#include <cstddef>
 
 using namespace JRE::glObject;
 
@@ -9,10 +10,11 @@ Buffer::Buffer (buffer_types buffer_type)
 }
 
 void
-Buffer::set_data (const void *data, unsigned int size) const
+Buffer::set_data (const void *data, uint8_t ssize, size_t count)
 {
   bind ();
-  glBufferData (type, size, data, GL_STATIC_DRAW);
+  glBufferData (type, ssize * count, data, GL_STATIC_DRAW);
+  this->count = count;
 }
 
 Buffer::~Buffer () { glDeleteBuffers (1, &m_RenderId); }

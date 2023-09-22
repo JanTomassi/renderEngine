@@ -1,5 +1,6 @@
 #pragma once
 #include <GL/glew.h>
+#include <cstddef>
 #include <cstdint>
 
 namespace JRE
@@ -15,6 +16,7 @@ class Buffer
 {
 private:
   unsigned int m_RenderId;
+  size_t count;
   const int type;
 
 public:
@@ -37,7 +39,7 @@ public:
    * @param size expressed in byte
    * @return if the call was successful
    */
-  void set_data (const void *data, unsigned int size) const;
+  void set_data (const void *data, uint8_t ssize, size_t count);
 
   /**
    * @brif delete the underling opengl buffer
@@ -53,6 +55,11 @@ public:
    * @brif unbing the opengl buffer from the context
    */
   void unbind () const;
+
+  /**
+   * @brief Get the number of element inside the buffer
+   */
+  void get_count() const;
 };
 }
 }
