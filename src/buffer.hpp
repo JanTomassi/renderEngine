@@ -17,7 +17,8 @@ class Buffer
 private:
   unsigned int m_RenderId;
   size_t count;
-  const int type;
+  const uint32_t type;
+  const uint32_t usage;
 
 public:
   enum class buffer_types : uint32_t
@@ -25,12 +26,25 @@ public:
     attributes = GL_ARRAY_BUFFER,
     indices = GL_ELEMENT_ARRAY_BUFFER
   };
+ 
+  enum class buffer_usage : uint32_t
+  {
+    stream_draw = GL_STREAM_DRAW,
+    stream_read = GL_STREAM_READ,
+    stream_copy = GL_STREAM_COPY,
+    static_draw = GL_STATIC_DRAW,
+    static_read = GL_STATIC_READ,
+    static_copy = GL_STATIC_COPY,
+    dynamic_draw = GL_DYNAMIC_DRAW,
+    dynamic_read = GL_DYNAMIC_READ,
+    dynamic_copy = GL_DYNAMIC_COPY,
+  };
 
   /**
    * @brif Init a new buffer assiume
    * @param buffer_type set the type of the buffer
    */
-  Buffer (buffer_types buffer_type);
+  Buffer (buffer_types buffer_type, buffer_usage usage);
 
   /**
    * @brif set the opengl buffer data
