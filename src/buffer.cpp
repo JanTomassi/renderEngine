@@ -32,3 +32,9 @@ Buffer::unbind () const
 {
   glBindBuffer (type, 0);
 }
+
+size_t
+Buffer::get_count () const
+{
+  return count;
+}
