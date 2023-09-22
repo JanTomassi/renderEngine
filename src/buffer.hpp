@@ -59,7 +59,7 @@ public:
   /**
    * @brief Get the number of element inside the buffer
    */
-  void get_count() const;
+  size_t get_count () const;
 };
 }
 }
