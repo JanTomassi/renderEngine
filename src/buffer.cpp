@@ -13,7 +13,7 @@ void
 Buffer::set_data (const void *data, uint8_t ssize, size_t count)
 {
   bind ();
-  glBufferData (type, ssize * count, data, GL_STATIC_DRAW);
+  glBufferData (type, static_cast<long> (ssize * count), data, usage);
   this->count = count;
 }
 
