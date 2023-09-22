@@ -29,7 +29,8 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
 
   /* Create a windowed mode window and its OpenGL context */
   main_window.app
-      = glfwCreateWindow (main_window.width, main_window.height,
+      = glfwCreateWindow (static_cast<int> (main_window.width),
+                          static_cast<int> (main_window.height),
                           main_window.window_name.c_str (), NULL, NULL);
 
   test_window_creation (main_window.app);
