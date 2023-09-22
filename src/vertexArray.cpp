@@ -23,10 +23,12 @@ VertexArray::set_vbuffer (const Buffer &vb, const helper::BufferLayout layout)
   auto layers = layout.get_elements ();
   for (auto it = layers.cbegin (); it != layers.cend (); it++)
     {
-      size_t index = std::distance (layers.cbegin (), it);
+      uint32_t index
+          = static_cast<uint32_t> (std::distance (layers.cbegin (), it));
       glEnableVertexAttribArray (index);
-      glVertexAttribPointer (index, it->data_count, it->data_type,
-                             it->normalize, layout.get_stride (),
+      glVertexAttribPointer (index, static_cast<int> (it->data_count),
+                             it->data_type, it->normalize,
+                             static_cast<int> (layout.get_stride ()),
                              reinterpret_cast<void *> (it->data_offset));
     }
 
