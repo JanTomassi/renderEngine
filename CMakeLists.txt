@@ -24,6 +24,7 @@ add_executable(jRenderEngine
   src/debug.hpp
 
   src/mesh.hpp
+  src/mesh.cpp
 
   src/mesh_parser.hpp
 
