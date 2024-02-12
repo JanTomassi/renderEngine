@@ -12,7 +12,7 @@ namespace Loader
 class MeshParser
 {
 private:
-  typedef std::tuple<std::vector<JRE::Mesh::Vertex>,
+  typedef std::tuple<std::vector<JRE::Mesh::Vertex>, JRE::helper::BufferLayout,
                      std::vector<JRE::Mesh::Index> >
       vertex_index_tuple;
 
