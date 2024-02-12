@@ -11,6 +11,22 @@ Buffer::Buffer (buffer_types buffer_type, buffer_usage usage)
   glGenBuffers (1, &m_RenderId);
 }
 
+Buffer::Buffer (Buffer &&o)
+    : m_RenderId (o.m_RenderId), type (o.type), usage (o.usage)
+{
+  o.m_RenderId = UINT32_MAX;
+}
+Buffer &
+Buffer::operator= (Buffer &&o)
+{
+  m_RenderId = o.m_RenderId;
+  type = o.type;
+  usage = o.usage;
+
+  o.m_RenderId = UINT32_MAX;
+  return *this;
+}
+
 void
 Buffer::set_data (const void *data, uint8_t ssize, size_t count)
 {
@@ -19,7 +35,11 @@ Buffer::set_data (const void *data, uint8_t ssize, size_t count)
   this->count = count;
 }
 
-Buffer::~Buffer () { glDeleteBuffers (1, &m_RenderId); }
+Buffer::~Buffer ()
+{
+  if (m_RenderId != UINT32_MAX)
+    glDeleteBuffers (1, &m_RenderId);
+}
 
 void
 Buffer::bind () const

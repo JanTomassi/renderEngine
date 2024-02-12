@@ -17,8 +17,8 @@ class Buffer
 private:
   unsigned int m_RenderId;
   size_t count;
-  const uint32_t type;
-  const uint32_t usage;
+  uint32_t type;
+  uint32_t usage;
 
 public:
   enum class buffer_types : uint32_t
@@ -26,7 +26,7 @@ public:
     attributes = GL_ARRAY_BUFFER,
     indices = GL_ELEMENT_ARRAY_BUFFER
   };
- 
+
   enum class buffer_usage : uint32_t
   {
     stream_draw = GL_STREAM_DRAW,
@@ -59,6 +59,12 @@ public:
    * @brif delete the underling opengl buffer
    */
   ~Buffer ();
+
+  Buffer (const Buffer &o) = delete;
+  Buffer &operator= (const Buffer &o) = delete;
+
+  Buffer (Buffer &&o);
+  Buffer &operator= (Buffer &&o);
 
   /**
    * @brif bind the opengl buffer from the context
