@@ -38,7 +38,7 @@ private:
      * @return size in bytes
      * @throw invalid_argument on unmatched types
      */
-    static uint32_t
+    static consteval uint32_t
     get_size_of_type (uint32_t type)
     {
       switch (type)
@@ -55,6 +55,8 @@ private:
           throw std::invalid_argument ("Type not implemented");
         }
     }
+
+    auto operator<=> (const Layer &o) const = default;
   };
 
   std::vector<Layer> m_layers; /*< Array of Layer */
@@ -89,6 +91,8 @@ public:
   {
     return m_stride;
   }
+
+  auto operator<=> (const BufferLayout &o) const = default;
 };
 template <> void BufferLayout::append<GLfloat> (uint32_t count);
 
