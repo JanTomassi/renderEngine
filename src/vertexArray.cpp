@@ -1,21 +1,54 @@
 #include "vertexArray.hpp"
+#include "buffer.hpp"
 #include "bufferLayout.hpp"
 #include <GL/glew.h>
 #include <cstddef>
 #include <cstdint>
 #include <algorithm>
+#include <memory>
 
 using namespace JRE::glObject;
 
-VertexArray::VertexArray () : m_RenderId ()
+VertexArray::VertexArray (Buffer &&vb, helper::BufferLayout &&layout)
+    : m_RenderId (), vb (std::make_shared<Buffer> (std::move (vb))),
+      layout (std::make_shared<helper::BufferLayout> (std::move (layout)))
 {
   glGenVertexArrays (1, const_cast<GLuint *> (&m_RenderId));
+
+  update_vbuffer (*this->vb, *this->layout);
 }
 
-VertexArray::~VertexArray () { glDeleteVertexArrays (1, &m_RenderId); }
+VertexArray::~VertexArray ()
+{
+  if (m_RenderId != UINT32_MAX)
+    glDeleteVertexArrays (1, &m_RenderId);
+}
+
+VertexArray::VertexArray (VertexArray &&o)
+    : m_RenderId (o.m_RenderId), vb (o.vb), layout (o.layout)
+{
+  o.m_RenderId = UINT32_MAX;
+}
+VertexArray &
+VertexArray::operator= (VertexArray &&o)
+{
+  m_RenderId = o.m_RenderId;
+  vb = o.vb;
+  layout = o.layout;
+  
+  o.m_RenderId = UINT32_MAX;
+  return *this;
+}
 
 void
-VertexArray::set_vbuffer (const Buffer &vb, const helper::BufferLayout layout)
+VertexArray::change_vbuffer (Buffer &&vb, helper::BufferLayout &&layout)
+{
+  this->vb = std::make_shared<Buffer> (std::move (vb));
+  this->layout = std::make_shared<helper::BufferLayout> (std::move (layout));
+}
+
+void
+VertexArray::update_vbuffer (Buffer &vb, helper::BufferLayout &layout)
 {
   vb.bind ();
   this->bind ();

@@ -14,22 +14,35 @@ namespace glObject
 class VertexArray
 {
 private:
-  const GLuint m_RenderId; /*< Set the Vertexarray index */
+  GLuint m_RenderId; /*< Set the Vertexarray index */
+  std::shared_ptr<Buffer> vb;
+  std::shared_ptr<helper::BufferLayout> layout;
+
+  /**
+   * @brief Update the underling vertex buffer and specify the layout of the data
+   */
+  void update_vbuffer (Buffer &vb, helper::BufferLayout &layout);
 
 public:
   /**
    * @brief Init object in the opengl context
    */
-  VertexArray ();
+  VertexArray (Buffer &&vb, helper::BufferLayout &&layout);
   /**
    * @brief Delete object from the opengl context
    */
   ~VertexArray ();
 
+  VertexArray(const VertexArray& o) = delete;
+  VertexArray& operator=(const VertexArray& o) = delete;
+  
+  VertexArray(VertexArray&& o);
+  VertexArray& operator=(VertexArray&& o);
+
   /**
-   * @brief Set the underling vertex buffer and specify the layout of the data
+   * @brief Change the underling vertex buffer and specify the layout of the data
    */
-  void set_vbuffer (const Buffer &vb, const helper::BufferLayout layout);
+  void change_vbuffer (Buffer &&vb, helper::BufferLayout &&layout);
 
   /**
    * @brief Bind this Vertex Array to the context
