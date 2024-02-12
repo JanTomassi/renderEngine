@@ -5,6 +5,8 @@
 #include <fstream>
 #include <map>
 #include <iostream>
+#include <stdexcept>
+#include <tuple>
 
 using namespace JRE::Mesh::Loader;
 using namespace JRE::Mesh;
@@ -174,26 +176,22 @@ ObjParser::transform_to_buffer (const parser_res &input,
                                 std::vector<JRE::Mesh::Vertex> &res_vertexs,
                                 std::vector<JRE::Mesh::Index> &res_indexs)
 {
-  const float zero_pos[3]{ 0, 0, 0 };
-  const float zero_nom[3]{ 0, 0, 0 };
-  const float zero_tex[2]{ 0, 0 };
-
   for (const auto &vertexs : input.face_elements)
     for (const auto &vertex : vertexs)
       {
         JRE::Mesh::Vertex to_push;
         if (vertex[0] > 0)
-          std::ranges::copy (input.pos_vertices[vertex[0] - 1], to_push.pos);
+          to_push.pos = input.pos_vertices[vertex[0] - 1];
         else
-          std::ranges::copy (zero_pos, to_push.pos);
+          to_push.pos.fill (0);
         if (vertex[1] > 0)
-          std::ranges::copy (input.tex_vertices[vertex[1] - 1], to_push.tex);
+          to_push.tex = input.tex_vertices[vertex[1] - 1];
         else
-          std::ranges::copy (zero_tex, to_push.tex);
+          to_push.tex.fill (0);
         if (vertex[2] > 0)
-          std::ranges::copy (input.nom_vertices[vertex[2] - 1], to_push.nom);
+          to_push.nom = input.nom_vertices[vertex[2] - 1];
         else
-          std::ranges::copy (zero_nom, to_push.nom);
+          to_push.nom.fill (0);
         if (!std::binary_search (res_vertexs.cbegin (), res_vertexs.cend (),
                                  to_push))
           {
@@ -207,18 +205,20 @@ ObjParser::transform_to_buffer (const parser_res &input,
     for (const auto &vertex : vertexs)
       {
         JRE::Mesh::Vertex to_find;
+
         if (vertex[0] > 0)
-          std::ranges::copy (input.pos_vertices[vertex[0] - 1], to_find.pos);
+          to_find.pos = input.pos_vertices[vertex[0] - 1];
         else
-          std::ranges::copy (zero_pos, to_find.pos);
+          to_find.pos.fill (0);
         if (vertex[1] > 0)
-          std::ranges::copy (input.tex_vertices[vertex[1] - 1], to_find.tex);
+          to_find.tex = input.tex_vertices[vertex[1] - 1];
         else
-          std::ranges::copy (zero_tex, to_find.tex);
+          to_find.tex.fill (0);
         if (vertex[2] > 0)
-          std::ranges::copy (input.nom_vertices[vertex[2] - 1], to_find.nom);
+          to_find.nom = input.nom_vertices[vertex[2] - 1];
         else
-          std::ranges::copy (zero_nom, to_find.nom);
+          to_find.nom.fill (0);
+
         auto indx = std::lower_bound (res_vertexs.cbegin (),
                                       res_vertexs.cend (), to_find);
         if (indx != res_vertexs.cend () && *indx == to_find)
@@ -229,13 +229,18 @@ ObjParser::transform_to_buffer (const parser_res &input,
       }
 }
 
-[[nodiscard]]std::tuple<std::vector<JRE::Mesh::Vertex>, std::vector<JRE::Mesh::Index> >
+[[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
+                         JRE::helper::BufferLayout,
+                         std::vector<JRE::Mesh::Index> >    
 ObjParser::get_vertex_and_index (const std::string &file_path)
 {
   std::vector<JRE::Mesh::Vertex> res_vertexs;
   std::vector<JRE::Mesh::Index> res_indexs;
 
   std::ifstream in (file_path);
+  if(!in.is_open()){
+	throw std::invalid_argument("Couldn't open file: " + file_path);
+  }
 
   init_map ();
 
@@ -268,5 +273,10 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
             << p_res.vertex_tracker.texture << " tex, "
             << p_res.vertex_tracker.index << " indx" << std::endl;
 
-  return std::tuple (res_vertexs, res_indexs);
+  JRE::helper::BufferLayout layout;
+  layout.append<GLfloat> (3);
+  layout.append<GLfloat> (3);
+  layout.append<GLfloat> (2);
+
+  return std::tuple (res_vertexs, layout, res_indexs);
 }

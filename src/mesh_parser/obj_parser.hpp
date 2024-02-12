@@ -41,7 +41,9 @@ private:
                             std::vector<JRE::Mesh::Index> &res_indexs);
 
 public:
-  [[nodiscard]]std::tuple<std::vector<JRE::Mesh::Vertex>, std::vector<JRE::Mesh::Index> >
+  [[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
+                           JRE::helper::BufferLayout,
+                           std::vector<JRE::Mesh::Index> >
   get_vertex_and_index (const std::string &file_path) override;
 };
 }
