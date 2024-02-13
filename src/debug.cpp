@@ -4,8 +4,9 @@
 #include <string>
 
 void GLAPIENTRY
-MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
-                 GLsizei length, const GLchar *message, const void *userParam)
+MessageCallback (GLenum source, GLenum type, [[maybe_unused]] GLuint id,
+                 GLenum severity, [[maybe_unused]] GLsizei length,
+                 const GLchar *message, const void *userParam)
 {
   std::string source_string;
   std::string type_string;

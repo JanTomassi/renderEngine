@@ -21,7 +21,8 @@ report_compile_error (uint32_t shader_id, const std::string &shader_name)
   glGetShaderiv (shader_id, GL_INFO_LOG_LENGTH, &msg_length);
 
   message = static_cast<char *> (
-      alloca (msg_length * sizeof (char))); // Allocate on the stack
+      alloca (static_cast<uint32_t> (msg_length)
+              * sizeof (char))); // Allocate on the stack
 
   glGetShaderInfoLog (shader_id, msg_length, &msg_length, message);
 
@@ -34,7 +35,7 @@ report_compile_error (uint32_t shader_id, const std::string &shader_name)
 }
 
 uint32_t
-Shader::compile_shader (uint32_t type, std::string &source,
+Shader::compile_shader (GLenum type, std::string &source,
                         const std::string &shader_name)
 {
   uint32_t shader_id = glCreateShader (type);
@@ -60,7 +61,8 @@ report_link_error (const uint32_t program_id)
   char *message;
   glGetProgramiv (program_id, GL_INFO_LOG_LENGTH, &msg_length);
   message = static_cast<char *> (
-      alloca (msg_length * sizeof (char))); // Allocate ont he stack
+      alloca (static_cast<uint32_t> (msg_length)
+              * sizeof (char))); // Allocate ont he stack
 
   glGetProgramInfoLog (program_id, 1024, &msg_length, message);
   std::cerr << "\033[31m"
@@ -137,7 +139,7 @@ Shader::use_program ()
   glUseProgram (m_shader_program_id);
 }
 
-uint32_t
+GLint
 Shader::get_uniform_location (const std::string &name)
 {
   return glGetUniformLocation (m_shader_program_id, name.c_str ());

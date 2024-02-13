@@ -49,7 +49,7 @@ ObjParser::parse_vertex_data_3 (std::istream &is)
   while (!pos_stream.eof () && index < 3)
     {
       pos_stream >> pos_elem;
-      double pos = std::stod (pos_elem);
+      float pos = std::stof (pos_elem);
       res[index++] = pos;
     }
   return res;
@@ -69,7 +69,7 @@ ObjParser::parse_vertex_data_2 (std::istream &is)
   while (!pos_stream.eof () && index < 2)
     {
       pos_stream >> pos_elem;
-      double pos = std::stod (pos_elem);
+      float pos = std::stof (pos_elem);
       res[index++] = pos;
     }
   return res;

@@ -16,7 +16,7 @@ private:
   std::vector<uint32_t> m_compiled_shader_id;
   bool is_shader_compiled = false;
 
-  uint32_t compile_shader (uint32_t type, std::string &source,
+  uint32_t compile_shader (GLenum type, std::string &source,
                            const std::string &shader_name);
 
   /**
@@ -50,7 +50,7 @@ public:
   /**
    * @brief Get shader uniform location from name
    */
-  uint32_t get_uniform_location (const std::string &name);
+  GLint get_uniform_location (const std::string &name);
 
   /**
    * @brief Set shader uniform of type float with 4 elements
