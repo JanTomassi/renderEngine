@@ -65,7 +65,7 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
   glfwSetKeyCallback (main_window.app, nullptr);
 }
 
-uint32_t
+void    
 WindowManager::start ()
 {
   while (!glfwWindowShouldClose (main_window.app))
@@ -85,6 +85,4 @@ WindowManager::start ()
     }
 
   glfwTerminate ();
-
-  return 0;
 }
