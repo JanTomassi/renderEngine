@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include "GLFW/glfw3.h"
+#include "mesh.hpp"
+#include "shader.hpp"
 
 using namespace JRE;
 
@@ -68,6 +70,11 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
 void    
 WindowManager::start ()
 {
+  glObject::Shader shader;
+  shader.add_src (GL_VERTEX_SHADER, "./shader/vertex.shader");
+  shader.add_src (GL_FRAGMENT_SHADER, "./shader/fragment.shader");
+  shader.use_program();
+  auto [va, info] = Mesh::load_mesh ("./object/moke.obj");
   while (!glfwWindowShouldClose (main_window.app))
     {
       glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -76,6 +83,9 @@ WindowManager::start ()
       glViewport (0, 0, width, height);
 
       /* Render here */
+      va.bind ();
+      glDrawElements (GL_TRIANGLES, static_cast<int>(info.idx.size ()), GL_UNSIGNED_INT,
+                      info.idx.data ());
 
       /* Swap front and back buffers */
       glfwSwapBuffers (main_window.app);
