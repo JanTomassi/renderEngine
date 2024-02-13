@@ -231,23 +231,25 @@ ObjParser::transform_to_buffer (const parser_res &input,
 
 [[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
                          JRE::helper::BufferLayout,
-                         std::vector<JRE::Mesh::Index> >    
+                         std::vector<JRE::Mesh::Index> >
 ObjParser::get_vertex_and_index (const std::string &file_path)
 {
   std::vector<JRE::Mesh::Vertex> res_vertexs;
   std::vector<JRE::Mesh::Index> res_indexs;
 
   std::ifstream in (file_path);
-  if(!in.is_open()){
-	throw std::invalid_argument("Couldn't open file: " + file_path);
-  }
+  if (!in.is_open ())
+    {
+      throw std::invalid_argument ("Couldn't open file: " + file_path);
+    }
 
   init_map ();
 
+#if DEBUG
   auto start = std::chrono::high_resolution_clock::now ();
-
+#endif
   parser_res p_res = parse_file (std::move (in));
-
+#if DEBUG
   auto end = std::chrono::high_resolution_clock::now ();
 
   std::cout << "Time parsing: "
@@ -256,9 +258,9 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
             << std::endl;
 
   start = std::chrono::high_resolution_clock::now ();
-
+#endif
   transform_to_buffer (std::move (p_res), res_vertexs, res_indexs);
-
+#if DEBUG
   end = std::chrono::high_resolution_clock::now ();
 
   std::cout << "Time transform: "
@@ -272,6 +274,7 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
             << p_res.vertex_tracker.normal << " nom, "
             << p_res.vertex_tracker.texture << " tex, "
             << p_res.vertex_tracker.index << " indx" << std::endl;
+#endif
 
   JRE::helper::BufferLayout layout;
   layout.append<GLfloat> (3);
