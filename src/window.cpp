@@ -67,14 +67,17 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
   glfwSetKeyCallback (main_window.app, nullptr);
 }
 
-void    
+void
 WindowManager::start ()
 {
   glObject::Shader shader;
   shader.add_src (GL_VERTEX_SHADER, "./shader/vertex.shader");
   shader.add_src (GL_FRAGMENT_SHADER, "./shader/fragment.shader");
-  shader.use_program();
+
+  shader.use_program ();
+
   auto [va, info] = Mesh::load_mesh ("./object/moke.obj");
+
   while (!glfwWindowShouldClose (main_window.app))
     {
       glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -82,10 +85,12 @@ WindowManager::start ()
       glfwGetWindowSize (main_window.app, &width, &height);
       glViewport (0, 0, width, height);
 
+      shader.use_program ();
+
       /* Render here */
       va.bind ();
-      glDrawElements (GL_TRIANGLES, static_cast<int>(info.idx.size ()), GL_UNSIGNED_INT,
-                      info.idx.data ());
+      glDrawElements (GL_TRIANGLES, static_cast<int> (info.idx.size ()),
+                      GL_UNSIGNED_INT, info.idx.data ());
 
       /* Swap front and back buffers */
       glfwSwapBuffers (main_window.app);
