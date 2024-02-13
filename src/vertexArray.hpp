@@ -15,8 +15,8 @@ class VertexArray
 {
 private:
   GLuint m_RenderId; /*< Set the Vertexarray index */
-  std::shared_ptr<Buffer> vb;
-  std::shared_ptr<helper::BufferLayout> layout;
+  std::shared_ptr<Buffer> vb; /*< opengl vertex buffer */
+  std::shared_ptr<helper::BufferLayout> layout; /*< layout of the a single vertex in vb */
 
   /**
    * @brief Update the underling vertex buffer and specify the layout of the data
