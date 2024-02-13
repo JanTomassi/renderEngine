@@ -1,12 +1,12 @@
 #include "obj_parser.hpp"
 #include <algorithm>
 #include <cassert>
-#include <chrono>
 #include <fstream>
 #include <map>
 #include <iostream>
 #include <stdexcept>
 #include <tuple>
+#include <sstream>
 
 using namespace JRE::Mesh::Loader;
 using namespace JRE::Mesh;
@@ -245,11 +245,11 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
 
   init_map ();
 
-#if DEBUG
+#if 0
   auto start = std::chrono::high_resolution_clock::now ();
 #endif
   parser_res p_res = parse_file (std::move (in));
-#if DEBUG
+#if 0
   auto end = std::chrono::high_resolution_clock::now ();
 
   std::cout << "Time parsing: "
@@ -260,7 +260,7 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
   start = std::chrono::high_resolution_clock::now ();
 #endif
   transform_to_buffer (std::move (p_res), res_vertexs, res_indexs);
-#if DEBUG
+#if 0
   end = std::chrono::high_resolution_clock::now ();
 
   std::cout << "Time transform: "
