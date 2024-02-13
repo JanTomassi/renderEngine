@@ -11,7 +11,7 @@ MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
   std::string type_string;
   std::string severity_string;
   std::string color;
-  bool is_throwing = false;
+  bool is_throwing = true;
   switch (source)
     {
     case GL_DEBUG_SOURCE_API:
@@ -80,6 +80,7 @@ MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
     case GL_DEBUG_SEVERITY_NOTIFICATION:
       severity_string = "Severity: notification";
       color = "\033[0m";
+      is_throwing = false;
       break;
     }
   if (((debug_params_t *)userParam)->throw_error && is_throwing)
@@ -91,8 +92,9 @@ MessageCallback (GLenum source, GLenum type, GLuint id, GLenum severity,
     }
   else
     {
-      std::cout << color << "[OpenGL Error](" << source_string << "; " << type_string
-                << "; " << severity_string << ") " << message << "\033[0m" << std::endl;
+      std::cout << color << "[OpenGL Error](" << source_string << "; "
+                << type_string << "; " << severity_string << ") " << message
+                << "\033[0m" << std::endl;
     }
 }
 
