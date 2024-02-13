@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-
 #include <GL/glew.h>
 #include <glm/matrix.hpp>
 
@@ -17,7 +16,8 @@ private:
   std::vector<uint32_t> m_compiled_shader_id;
   bool is_shader_compiled = false;
 
-  uint32_t compile_shader (uint32_t type, std::string &source, const std::string &shader_name);
+  uint32_t compile_shader (uint32_t type, std::string &source,
+                           const std::string &shader_name);
 
   /**
    * @brief Link compiled shader to program

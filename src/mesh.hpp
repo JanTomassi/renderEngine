@@ -32,7 +32,8 @@ struct Index
 
 /**
  * @brief Load a mesh in memory
- * @return the VertexArray that own all the mesh data and a vector of idx of triangles
+ * @return the VertexArray that own all the mesh data and a vector of idx of
+ * triangles
  */
 std::tuple<JRE::glObject::VertexArray, std::vector<JRE::Mesh::Index> >
 load_mesh (const std::string &path);

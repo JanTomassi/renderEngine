@@ -35,7 +35,7 @@ VertexArray::operator= (VertexArray &&o)
   m_RenderId = o.m_RenderId;
   vb = o.vb;
   layout = o.layout;
-  
+
   o.m_RenderId = UINT32_MAX;
   return *this;
 }
