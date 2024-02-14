@@ -8,6 +8,7 @@
 #include "shader.hpp"
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
+#include "scene.hpp"
 
 using namespace JRE;
 
@@ -78,7 +79,8 @@ WindowManager::start ()
 
   shader.use_program ();
 
-  auto [va, info] = Mesh::load_mesh ("./object/moke.obj");
+  Scene scene;
+  scene.load_mesh_sync ("./object/ico.obj");
 
   while (!glfwWindowShouldClose (main_window.app))
     {
@@ -100,9 +102,7 @@ WindowManager::start ()
       glm::mat4 cam_space = proj * look * trans;
       shader.set_uniform_mat_4f ("cam_space", cam_space);
 
-      va.bind ();
-      glDrawElements (GL_TRIANGLES, static_cast<int> (info.idx.size ()),
-                      GL_UNSIGNED_INT, info.idx.data ());
+      scene.render ();
 
       /* Swap front and back buffers */
       glfwSwapBuffers (main_window.app);
