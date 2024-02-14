@@ -6,6 +6,8 @@
 #include "GLFW/glfw3.h"
 #include "mesh.hpp"
 #include "shader.hpp"
+#include <glm/ext.hpp>
+#include <glm/glm.hpp>
 
 using namespace JRE;
 
@@ -85,9 +87,19 @@ WindowManager::start ()
       glfwGetWindowSize (main_window.app, &width, &height);
       glViewport (0, 0, width, height);
 
-      shader.use_program ();
-
       /* Render here */
+      glm::vec3 pos = glm::vec3 (0, 0, 4);
+      glm::mat4 proj = glm::infinitePerspective (
+          glm::radians (80.0f), (GLfloat)width / (GLfloat)height, 0.1f);
+      glm::mat4 trans
+          = glm::mat4 (glm::vec4 (1, 0, 0, 0), glm::vec4 (0, 1, 0, 0),
+                       glm::vec4 (0, 0, 1, 0), glm::vec4 (pos, 1));
+      glm::mat4 look
+          = glm::lookAt (glm::vec3 (0, 0, 1), pos, glm::vec3 (0, 1, 0));
+
+      glm::mat4 cam_space = proj * look * trans;
+      shader.set_uniform_mat_4f ("cam_space", cam_space);
+
       va.bind ();
       glDrawElements (GL_TRIANGLES, static_cast<int> (info.idx.size ()),
                       GL_UNSIGNED_INT, info.idx.data ());
