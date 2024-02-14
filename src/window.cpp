@@ -48,14 +48,14 @@ WindowManager::WindowManager (uint32_t x, uint32_t y)
   debug_params_t *debug_params = new debug_params_t ();
   debug_params->throw_error = true;
 
-  glDebugMessageCallback (MessageCallback, &debug_params);
+  glDebugMessageCallback (MessageCallback, debug_params);
 #else
   glEnable (GL_DEBUG_OUTPUT);
 
   debug_params_t *debug_params = new debug_params_t ();
   debug_params->throw_error = false;
 
-  glDebugMessageCallback (MessageCallback, &debug_params);
+  glDebugMessageCallback (MessageCallback, debug_params);
 #endif
 
   glfwSwapInterval (1);
