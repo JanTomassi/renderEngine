@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include "GLFW/glfw3.h"
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include "mesh.hpp"
 #include "shader.hpp"
 #include <glm/ext.hpp>
@@ -80,7 +83,12 @@ WindowManager::start ()
   shader.use_program ();
 
   Scene scene;
-  scene.load_mesh_sync ("./object/ico.obj");
+  int i = 0;
+
+  scene.load_mesh_async ("./object/ico.obj");
+
+  glm::vec3 pos = glm::vec3 (0, 1, 1);
+  glm::mat4 look = glm::lookAt (pos, glm::vec3 (0, 0, 0), glm::vec3 (0, 1, 0));
 
   while (!glfwWindowShouldClose (main_window.app))
     {
@@ -90,16 +98,10 @@ WindowManager::start ()
       glViewport (0, 0, width, height);
 
       /* Render here */
-      glm::vec3 pos = glm::vec3 (0, 0, 4);
       glm::mat4 proj = glm::infinitePerspective (
           glm::radians (80.0f), (GLfloat)width / (GLfloat)height, 0.1f);
-      glm::mat4 trans
-          = glm::mat4 (glm::vec4 (1, 0, 0, 0), glm::vec4 (0, 1, 0, 0),
-                       glm::vec4 (0, 0, 1, 0), glm::vec4 (pos, 1));
-      glm::mat4 look
-          = glm::lookAt (glm::vec3 (0, 0, 1), pos, glm::vec3 (0, 1, 0));
 
-      glm::mat4 cam_space = proj * look * trans;
+      glm::mat4 cam_space = proj * look;
       shader.set_uniform_mat_4f ("cam_space", cam_space);
 
       scene.render ();
