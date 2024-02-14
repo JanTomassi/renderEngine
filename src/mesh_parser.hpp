@@ -13,7 +13,7 @@ class MeshParser
 {
 private:
   typedef std::tuple<std::vector<JRE::Mesh::Vertex>, JRE::helper::BufferLayout,
-                     std::vector<JRE::Mesh::Index> >
+                     JRE::Mesh::Info>
       vertex_index_tuple;
 
 public:

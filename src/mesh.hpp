@@ -1,11 +1,11 @@
 #pragma once
-#include "bufferLayout.hpp"
 #include "vertexArray.hpp"
 #include <compare>
 #include <cstddef>
 #include <cstdint>
 #include <string>
 #include <array>
+#include <vector>
 
 namespace JRE
 {
@@ -30,12 +30,17 @@ struct Index
   uint32_t index;
 };
 
+struct Info
+{
+  std::vector<Index> idx;
+};
+
 /**
  * @brief Load a mesh in memory
  * @return the VertexArray that own all the mesh data and a vector of idx of
  * triangles
  */
-std::tuple<JRE::glObject::VertexArray, std::vector<JRE::Mesh::Index> >
+std::tuple<JRE::glObject::VertexArray, JRE::Mesh::Info>
 load_mesh (const std::string &path);
 }
 }

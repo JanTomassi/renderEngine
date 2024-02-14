@@ -230,8 +230,7 @@ ObjParser::transform_to_buffer (const parser_res &input,
 }
 
 [[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
-                         JRE::helper::BufferLayout,
-                         std::vector<JRE::Mesh::Index> >
+                         JRE::helper::BufferLayout, JRE::Mesh::Info>
 ObjParser::get_vertex_and_index (const std::string &file_path)
 {
   std::vector<JRE::Mesh::Vertex> res_vertexs;
@@ -281,5 +280,6 @@ ObjParser::get_vertex_and_index (const std::string &file_path)
   layout.append<GLfloat> (3);
   layout.append<GLfloat> (2);
 
-  return std::tuple (res_vertexs, layout, res_indexs);
+  return std::tuple (res_vertexs, layout,
+                     JRE::Mesh::Info{ .idx = res_indexs });
 }
