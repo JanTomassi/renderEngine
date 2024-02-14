@@ -1,4 +1,5 @@
-#include "../mesh_parser.hpp"
+#pragma once
+#include "../mesh.hpp"
 #include <array>
 #include <cstdint>
 
@@ -41,8 +42,7 @@ private:
                             std::vector<JRE::Mesh::Index> &res_indexs);
 
 public:
-  [[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
-                           JRE::helper::BufferLayout, JRE::Mesh::Info>
+  [[nodiscard]] res_t
   get_vertex_and_index (const std::string &file_path) override;
 };
 }

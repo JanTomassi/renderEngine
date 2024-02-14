@@ -229,8 +229,7 @@ ObjParser::transform_to_buffer (const parser_res &input,
       }
 }
 
-[[nodiscard]] std::tuple<std::vector<JRE::Mesh::Vertex>,
-                         JRE::helper::BufferLayout, JRE::Mesh::Info>
+[[nodiscard]] ObjParser::res_t
 ObjParser::get_vertex_and_index (const std::string &file_path)
 {
   std::vector<JRE::Mesh::Vertex> res_vertexs;

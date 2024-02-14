@@ -35,12 +35,27 @@ struct Info
   std::vector<Index> idx;
 };
 
+namespace Loader
+{
+class MeshParser
+{
+public:
+  typedef std::tuple<std::vector<JRE::Mesh::Vertex>, JRE::helper::BufferLayout,
+                     JRE::Mesh::Info>
+      res_t;
+  /**
+   * @brief Get a vector representation to put inside a opengl buffer
+   */
+  virtual res_t get_vertex_and_index (const std::string &file_path)
+      = 0;
+};
+}
+
 /**
  * @brief Load a mesh in memory
  * @return the VertexArray that own all the mesh data and a vector of idx of
  * triangles
  */
-std::tuple<JRE::glObject::VertexArray, JRE::Mesh::Info>
-load_mesh (const std::string &path);
+Loader::MeshParser::res_t load_mesh (const std::string &path);
 }
 }
