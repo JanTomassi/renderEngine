@@ -31,6 +31,9 @@ add_executable(jRenderEngine
   src/mesh_parser/obj_parser.cpp
   src/mesh_parser/obj_parser.hpp
 
+  src/scene.cpp
+  src/scene.hpp
+
   src/shader.cpp
   src/shader.hpp
 
