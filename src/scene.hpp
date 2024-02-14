@@ -14,7 +14,7 @@ private:
   std::vector<std::tuple<JRE::glObject::VertexArray, JRE::Mesh::Info> > meshes;
 
   mutable std::shared_mutex loader_mtx;
-  std::vector<std::future<std::future<void>>> loaders;
+  std::vector<std::function<void (void)> > loaders;
 
 public:
   void load_mesh_sync (std::string file_path);

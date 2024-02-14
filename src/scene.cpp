@@ -1,3 +1,4 @@
+#include <iostream>
 #include "scene.hpp"
 #include "mesh.hpp"
 #include <bits/utility.h>
@@ -5,6 +6,8 @@
 #include <mutex>
 #include <shared_mutex>
 #include <string>
+#include <thread>
+#include <utility>
 
 namespace JRE
 {
@@ -28,24 +31,27 @@ Scene::load_mesh_sync (std::string file_path)
 void
 Scene::load_mesh_async (std::string file_path)
 {
-  auto res = std::async (std::launch::async, [&] () {
+  std::jthread ioThread ([this, file_path] () {
     auto [vex, layout, info] = Mesh::load_mesh (file_path);
+    auto cb
+        = [this, vex = std::move (vex), layout, info = std::move (info)] () {
+            using namespace glObject;
 
-    auto res = std::async (std::launch::deferred, [&] () {
-      using namespace glObject;
-      Buffer data_buf (Buffer::buffer_types::attributes,
-                       Buffer::buffer_usage::static_draw);
-      data_buf.set_data (vex.data (), sizeof (vex[0]), vex.size ());
+            Buffer data_buf (Buffer::buffer_types::attributes,
+                             Buffer::buffer_usage::static_draw);
+            data_buf.set_data (vex.data (), sizeof (vex[0]), vex.size ());
 
-      VertexArray va (std::move (data_buf), std::move (layout));
+            VertexArray va (std::move (data_buf), std::move (layout));
 
-      std::unique_lock<std::shared_mutex> lck (meshes_mtx);
-      meshes.push_back (std::tuple (std::move (va), std::move (info)));
-    });
-    return res;
+            std::unique_lock<std::shared_mutex> lck (meshes_mtx);
+            meshes.push_back (std::tuple (std::move (va), std::move (info)));
+          };
+
+    std::unique_lock<std::shared_mutex> lck (loader_mtx);
+    loaders.push_back (cb);
   });
-  std::unique_lock<std::shared_mutex> lck (loader_mtx);
-  loaders.push_back (std::move (res));
+
+  ioThread.detach ();
 }
 
 void
@@ -53,8 +59,8 @@ Scene::render ()
 {
   {
     std::shared_lock<std::shared_mutex> lck (loader_mtx);
-    for (auto &loader : loaders)
-      loader.wait ();
+    for (const auto &loader : loaders)
+      loader ();
     loaders.clear ();
   }
   {
